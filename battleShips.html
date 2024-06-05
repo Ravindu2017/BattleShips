@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Ships</title>
+    <style>
+        #battleShips {
+            /* background-color: black; */
+            border: 2px solid;
+            width: 500px;
+            height: 400px;
+        }
+        #battleShips th, #battleShips td {
+            background-color: white;
+            border: 2px solid;
+            padding: 20px;
+        }
+
+        /* #battleShips td:hover {
+            background-color: gray;
+            /* border: 2px solid;
+            padding: 20px; *
+        } */
+
+
+        #battleShipsTwo {
+            /* background-color: black; */
+            border: 2px solid;
+            width: 500px;
+            height: 400px;
+        }
+
+        #battleShipsTwo th, #battleShipsTwo td {
+            background-color: white;
+            border: 2px solid;
+            padding: 20px;
+        }
+
+        #battleShips td:hover {
+            background-color: gray;
+        }
+/* 
+        #battleShipsTwo td:hover {
+            background-color: gray;
+            /*border: 2px solid;
+             padding: 20px; /
+        } */
+
+
+    </style>
+    <script src="gamePlan.js"></script>
+</head>
+<body>
+    <table id="battleShips">
+        <thead>
+            <tr>
+                <th> </th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+                <th>E</th>
+                <th>F</th>
+                <th>G</th>
+                <th>H</th>
+                <th>I</th>
+                <th>J</th>
+            </tr>
+        </thead>
+        <tr id="header-1">
+                <th>1</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-2">
+                <th>2</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-3">
+                <th>3</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-4">
+                <th>4</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-5">
+                <th>5</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-6">
+                <th>6</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-7">
+                <th>7</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-8">
+                <th>8</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-9">
+                <th>9</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+        <tr id="header-10">
+                <th>10</th>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+        </tr>
+    </table>
+        <div><p></p></div>
+        
+
+        <table id="battleShipsTwo">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>D</th>
+                    <th>E</th>
+                    <th>F</th>
+                    <th>G</th>
+                    <th>H</th>
+                    <th>I</th>
+                    <th>J</th>
+                </tr>
+            </thead>
+            <tr id="footer-1">
+                    <th>1</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-2">
+                    <th>2</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-3">
+                    <th>3</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-4">
+                    <th>4</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-5">
+                    <th>5</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-6">
+                    <th>6</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-7">
+                    <th>7</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-8">
+                    <th>8</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-9">
+                    <th>9</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+            <tr id="footer-10">
+                    <th>10</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+            </tr>
+    </table>
+    <script>
+    
+        // document.getElementById("battleShips").addEventListener("click", myFunc);
+        // document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
+
+        let turn = false;
+
+        // class Position {
+        //     constructor(width, depth){
+        //         this.width = width;
+        //         this.depth = depth;
+        //         this.hit = null;
+        //         this.ship = null;
+        //     }
+        // }
+
+        // class Gameboard {
+        //     // constructor() {
+        //     //     this.board = board;
+        //     // }
+            
+        //     append(x, y){
+        //         const squares = new Position(x, y);
+        //     }
+        // }
+        const playerOne = new Gameboard();
+        const playerTwo = new Gameboard();
+
+        playerOne.createBoardGame();
+        playerTwo.createBoardGame();
+
+
+        function placeShips(){
+
+        }
+
+
+        function myFunc(e){
+            // let turn = false;
+
+            if (!turn && e.target.parentElement.id.split("-")[0] === "header") { 
+                turn = true;
+            } else if (turn && e.target.parentElement.id.split("-")[0] === "footer") {
+                turn = false;
+            } else {
+                console.log(turn, "..no?...");
+                return;
+            }
+
+            const location = new Position();
+            const depth = e.target.parentElement.id.split("-");
+            e.target.style.backgroundColor = "orange";
+            console.log(e, e.target.color, depth[0]);
+            let currentBoard = "";
+
+            // if (!turn && depth[0] === "header") { e.target.parentElement.id.split("-")
+            //     turn = true;
+            // } else if (turn && depth[0] === "footer") {
+            //     turn = false;
+            // } else {
+            //     console.log(turn, "..no?...");
+            //     return;
+            // }
+
+            if (depth[0] === "header") {
+                currentBoard = playerOne;
+            } else if (depth[0] === "footer") {
+                currentBoard = playerTwo;
+            }
+
+            console.log(currentBoard.board);
+
+            switch(e.target.innerText) {
+                case "1":
+                    location.width = "A";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    console.log(currentBoard.board[location.width+location.depth], location.width, location.depth);
+                    break;
+                case "2":
+                    location.width = "B";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "3":
+                    location.width = "C";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "4":
+                    location.width = "D";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "5":
+                    location.width = "E";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "6":
+                    location.width = "F";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "7":
+                    location.width = "G";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "8":
+                    location.width = "H";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "9":
+                    location.width = "I";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;
+                case "10":
+                    location.width = "J";
+                    location.depth = depth[1];
+                    location.hit = true;
+                    currentBoard.board[location.width+location.depth].hit = true;
+                    break;0
+                default:
+                    console.log("Clicked outside the gameboard");
+            }
+
+            console.log(`Position ${location.width}${location.depth} has been hit!`);
+            return location
+        }
+
+        document.getElementById("battleShips").addEventListener("click", myFunc);
+        document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
+
+        document.getElementById("battleShipsTwo").addEventListener("mouseover", (e) => {
+            if (e.toElement.nodeName === "TD") {
+                console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement);
+                console.log("GARY");
+                e.target.style.backgroundColor = "grey";
+            }
+        });
+
+        document.getElementById("battleShipsTwo").addEventListener("mouseout", (e) => {
+            if (e.fromElement.nodeName === "TD") {
+                console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement.id);
+                console.log("GARY");
+                e.target.style.backgroundColor = "white";
+            }
+        });
+
+
+
+        // module.exports = {
+        //     Position
+        // }
+    </script>
+</body>
+</html>
