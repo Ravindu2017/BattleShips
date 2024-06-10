@@ -11,7 +11,21 @@
             width: 500px;
             height: 400px;
         }
+
+        #battleShipsTwo {
+            /* background-color: black; */
+            border: 2px solid;
+            width: 500px;
+            height: 400px;
+        }
+
         #battleShips th, #battleShips td {
+            background-color: white;
+            border: 2px solid;
+            padding: 20px;
+        }
+
+        #battleShipsTwo th, #battleShipsTwo td {
             background-color: white;
             border: 2px solid;
             padding: 20px;
@@ -23,23 +37,9 @@
             padding: 20px; *
         } */
 
-
-        #battleShipsTwo {
-            /* background-color: black; */
-            border: 2px solid;
-            width: 500px;
-            height: 400px;
-        }
-
-        #battleShipsTwo th, #battleShipsTwo td {
-            background-color: white;
-            border: 2px solid;
-            padding: 20px;
-        }
-
-        #battleShips td:hover {
+        /* #battleShips td:hover {
             background-color: gray;
-        }
+        } */
 /* 
         #battleShipsTwo td:hover {
             background-color: gray;
@@ -391,6 +391,10 @@
 
         function myFunc(e){
             // let turn = false;
+            console.log(e.toElement, e);
+            if (!(e.target.nodeName === "TD")) {
+                return
+            }
 
             if (!turn && e.target.parentElement.id.split("-")[0] === "header") { 
                 turn = true;
@@ -401,20 +405,11 @@
                 return;
             }
 
-            const location = new Position();
+            // const location = new Position();
             const depth = e.target.parentElement.id.split("-");
             e.target.style.backgroundColor = "orange";
             console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
-
-            // if (!turn && depth[0] === "header") { e.target.parentElement.id.split("-")
-            //     turn = true;
-            // } else if (turn && depth[0] === "footer") {
-            //     turn = false;
-            // } else {
-            //     console.log(turn, "..no?...");
-            //     return;
-            // }
 
             if (depth[0] === "header") {
                 currentBoard = playerOne;
@@ -424,104 +419,163 @@
 
             console.log(currentBoard.board);
 
-            switch(e.target.innerText) {
-                case "1":
-                    location.width = "A";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    console.log(currentBoard.board[location.width+location.depth], location.width, location.depth);
-                    break;
-                case "2":
-                    location.width = "B";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "3":
-                    location.width = "C";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "4":
-                    location.width = "D";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "5":
-                    location.width = "E";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "6":
-                    location.width = "F";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "7":
-                    location.width = "G";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "8":
-                    location.width = "H";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "9":
-                    location.width = "I";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;
-                case "10":
-                    location.width = "J";
-                    location.depth = depth[1];
-                    location.hit = true;
-                    currentBoard.board[location.width+location.depth].hit = true;
-                    break;0
-                default:
-                    console.log("Clicked outside the gameboard");
-            }
-
-            console.log(`Position ${location.width}${location.depth} has been hit!`);
-            return location
+            currentBoard.board[e.target.innerText].hit = true;
+            console.log(`Position ${e.target.innerText} has been hit!`);
+            // return location
         }
 
         document.getElementById("battleShips").addEventListener("click", myFunc);
         document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
 
-        document.getElementById("battleShipsTwo").addEventListener("mouseover", (e) => {
+        document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray
+            // (e) => {
+            //     if (e.toElement.nodeName === "TD") {
+            //         // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement);
+            //         // console.log("GARY");
+            //         if (playerTwo.board[e.target.innerText].hit !== true) {
+            //             // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement.id);
+            //             console.log("GARY", playerTwo.board[e.target.innerText].hit);
+            //             // console.log(e.target.parentElement.id.split("-")[0]);
+            //             e.target.style.backgroundColor = "grey";
+            //         }
+            //     }
+            // }
+        );
+
+        document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite
+            // (e) => {
+            //     if (e.fromElement.nodeName === "TD") {
+            //         // console.log(playerOne.board[e.target.innerText], e.target.innerText);
+            //         // console.log(e.target.parentElement.id.split("-")[0]);
+            //         if (playerTwo.board[e.target.innerText].hit !== true) {
+            //             console.log("GARY white", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
+            //             e.target.style.backgroundColor = "white";
+            //         }
+            //     }
+            // }
+        );
+
+        document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
+        document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
+
+        // let shipsPlzaced = false;
+
+        function mouseGray(e) {
+            // console.log(e, "mouseGray called");
+            
+            let arena = "";
+            let parentNode = "";
+            // console.log(e.target.toElement);
             if (e.toElement.nodeName === "TD") {
                 // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement);
                 // console.log("GARY");
-                if (playerTwo.board[e.target.innerText].hit !== true) {
+                if (e.target.parentElement.id.split("-")[0] === "header") {
+                    arena = playerOne;
+                    parentNode = document.getElementById("battleShips");
+                } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+                    arena = playerTwo;
+                    parentNode = document.getElementById("battleShipsTwo");
+                }
+
+
+                rotateShips(arena, parentNode, e.target.innerText);
+                // if (rotateShips(arena, parentNode, e.target.innerText) === false) {
+                //     return
+                // }
+
+                // rotateShips(arena, parentNode, shipsPlaced, e.target.innerText);
+                // if (rotateShips(arena, parentNode, shipsPlaced, e.target.innerText) === false) {
+                //     return
+                // }
+
+                if (arena.board[e.target.innerText].hit !== true) {
+                    
                     // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement.id);
-                    console.log("GARY", playerTwo.board[e.target.innerText].hit);
-                    // console.log(e.target.parentElement.id.split("-")[0]);
-                    e.target.style.backgroundColor = "grey";
+                    // console.log("Mouse Gray", playerTwo.board[e.target.innerText].hit);
+                    // console.log(e.target.parentElement.id.split("-")[0], e.target.innerText[0], e, nodeList[3].children, nodeList[3].rows);
+                    
+                    // document.getElementByTagName()
+                    // for (const tag of document.querySelectorAll("td")) {
+                    //     if (tag.textContent.includes(`${e.target.innerText[0]}`)){
+                    //         console.log(tag.textContent, "inner loops");
+                    //         tag.style.backgroundColor = "gray";
+                    //     }
+                    // }
+                    e.target.style.backgroundColor = "gray";
                 }
             }
-        });
+        }
 
-        document.getElementById("battleShipsTwo").addEventListener("mouseout", (e) => {
+        function mouseWhite(e) {
+            // console.log(e, "mouseWhite called");
+            let arena = "";
             if (e.fromElement.nodeName === "TD") {
                 // console.log(playerOne.board[e.target.innerText], e.target.innerText);
                 // console.log(e.target.parentElement.id.split("-")[0]);
-                if (playerTwo.board[e.target.innerText].hit !== true) {
-                    console.log("GARY white", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
+                if (e.target.parentElement.id.split("-")[0] === "header") {
+                    arena = playerOne;
+                } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+                    arena = playerTwo;
+                }
+                if (arena.board[e.target.innerText].hit !== true) {
+                    // console.log("Mouse White", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
                     e.target.style.backgroundColor = "white";
                 }
             }
-        });
+        }
 
 
+        function rotateShips(playerBoard, htmlBoard, loc) {
+            // console.log(playerBoard.board, htmlBoard.childNodes[3].childNodes[1].childNodes);
+            playerBoard.place();
+
+            let boardNodes = {
+
+            };
+
+            let why = 7;
+            // while (playerBoard.shipsPlaced === false && why > 0) {
+            while (playerBoard.shipsPlaced === false) {
+                // why--;
+                playerBoard.updateShipsPlaced();
+                for (const ship of Object.entries(playerBoard.ships)) {
+                    console.log(ship[0], ship[1], "inner loops");
+                    delete playerBoard.ships[ship[0]]
+                }
+                console.log(playerBoard.shipsPlaced, "Nada")
+
+            }
+
+            // for (const ship of Object.entries(playerBoard.ships)) {
+            //     console.log(ship[0], ship[1], "inner loops");
+            // }
+
+            // This code goes through both boards, need to narrow it down to just one board
+            // for (const tag of document.querySelectorAll("td")) {
+            // for (const tag of htmlBoard.childNodes[3].childNodes[3].childNodes) {
+            //     if (tag.textContent.includes(`${loc[0]}`)){
+            //         console.log(tag.textContent, "inner loops");
+            //         tag.style.backgroundColor = "gray";
+            //     }
+            // }
+
+            // if (placed === false) {
+            //     document.getElementById("battleShipsTwo");
+            //     // const nodeList = parentNode.childNodes;
+            //     // let row = e.target.innerText[1] - 1;
+            //     // console.log("Rows", e.target.innerText[1], nodeList[3].rows[row], nodeList[3].rows[9].cells[10]);
+            //     // for (const tag of document.querySelectorAll("td")) {
+            //     //     if (tag.textContent.includes(`${e.target.innerText[0]}`)){
+            //     //         console.log(tag.textContent, "inner loops");
+            //     //         tag.style.backgroundColor = "gray";
+            //     //     }
+            //     // }
+            //     placed = true;
+            // }
+            // return placed
+        }
+
+        // rotateShips(playerOne, false);
 
         // module.exports = {
         //     Position

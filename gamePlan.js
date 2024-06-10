@@ -6,12 +6,23 @@ class Position {
         this.depth = depth;
         this.hit = null;
         this.ship = null;
+        // this.fleet = {
+        //     "carrier":      5,}
+        //     "BattleShip":   4,
+        //     "Destroyer":    3,
+        //     "Submarine":    3,
+        //     "Patrol":       2,
+        // };
     }
 }
 
 class Gameboard {
-    constructor(board) {
+    constructor() {
         this.board = {};
+        this.ships = {};
+        // this.shipsPlaced = true;
+        this.shipsPlaced = false;
+        this.boolShips = {};
     }
     
     append(x, y){
@@ -37,6 +48,42 @@ class Gameboard {
             }
         }
     }
+
+    place() {
+        this.ships = {
+            "Carrier":      5,
+            "BattleShip":   4,
+            "Destroyer":    3,
+            "Submarine":    3,
+            "Patrol":       2,
+        };
+        // this.shipsPlaced = this.ships && Object.keys(this.ships).length > 0;
+        this.updateShipsPlaced();
+    }
+
+    updateShipsPlaced() {
+        this.shipsPlaced = Object.keys(this.ships).length <= 0;
+    }
+
+    currentShips({shipName: value}) {
+        this.boolShips = {
+            "Carrier":      value,
+            "BattleShip":   value,
+            "Destroyer":    value,
+            "Submarine":    value,
+            "Patrol":       value,
+        }
+    }
+
+    // haveShips() {
+    //     this.ships = {
+    //         "Carrier":      5,
+    //         "BattleShip":   4,
+    //         "Destroyer":    3,
+    //         "Submarine":    3,
+    //         "Patrol":       2,
+    //     }
+    // }
 }
 
 const gameState = new Gameboard();
@@ -58,9 +105,21 @@ const what = new Position("A", 10);
 // createBoardGame(gameState);
 
 gameState.createBoardGame();
+console.log(gameState.shipsPlaced);
+gameState.place();
+delete gameState.ships.BattleShip
+delete gameState.ships.Carrier
+delete gameState.ships.Destroyer
+delete gameState.ships.Patrol
+delete gameState.ships.Submarine
 
-console.log(gameState.board["A10"].hit, gameState.board["F2"].ship, what, String.fromCharCode(65))//, charCodeAt(165))
-console.log(gameState.board);
+console.log(gameState.shipsPlaced);
+// gameState.ships = {};
+gameState.updateShipsPlaced();
+console.log(gameState.ships, Object.keys(gameState.ships).length <= 0, gameState.shipsPlaced, gameState.currentShips());
+
+// console.log(gameState.board["A10"].hit, gameState.board["F2"].ship, what, String.fromCharCode(65))//, charCodeAt(165))
+// console.log(gameState.board);
 // module.exports = {
 //     Position,
 //     Gameboard
