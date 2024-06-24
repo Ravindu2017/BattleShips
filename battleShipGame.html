@@ -406,11 +406,232 @@
         document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray);
         document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
 
+        placeTheShips(playerOne, "battleShips", "A1");
 
         // Let's execute these functions only after the ships have been placed
         document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
         document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
 
+        function red(cell){
+            cell.style.background = "pink";
+        }
+
+        function turnRed(htmlBoard, val){
+            // playerBoard.board[val].ship = true;
+            const table = document.getElementById(htmlBoard);
+            const cells = table.getElementsByTagName("td");
+            Array.from(cells).forEach(cell => {
+                if (cell.textContent === val) {
+                    cell.style.background = "pink"
+                }
+            });
+        }
+
+        function highLight(htmlBoard, val){
+            // playerBoard.board[val].ship = true;
+            const table = document.getElementById(htmlBoard);
+            const cells = table.getElementsByTagName("td");
+            // console.log(val.s)
+            Array.from(cells).forEach(cell => {
+                if (cell.textContent === val) {
+                    cell.style.background = "pink";
+                } 
+                // else {
+                //     cell.style.background = "white";
+                // }
+            });
+        }
+
+        const coords = {
+                "Carrier":      [],
+                "Battleship":   [],
+                "Destroyer":    [],
+                "Submarine":    [],
+                "Patrol":       [],
+            }
+
+            
+        // Ship placement function
+        function placeTheShips(playerBoard, htmlBoard, idx) {
+            // const shipLength = {
+            //     "Carrier":      5,
+            //     "Battleship":   4,
+            //     "Destroyer":    3,
+            //     "Submarine":    3,
+            //     "Patrol":       2,
+            // };
+
+            // const coords = {
+            //     "Carrier":      [],
+            //     "Battleship":   [],
+            //     "Destroyer":    [],
+            //     "Submarine":    [],
+            //     "Patrol":       [],
+            // }
+            const table = document.getElementById(htmlBoard);
+            const cells = table.getElementsByTagName("td");
+            // let idx = "A1";
+            // let coords = [];
+            // Array.from(cells).forEach(cell => {
+            //     // console.log(cell.textContent);
+            //     // if (cell.textContent === "A8") {
+            //         cell.style.background = "white"
+            //     // }
+            // });
+
+            // IF they share the same letters shift => 1
+            // ELSE they share the same numbers shift => 1
+
+            console.log(cells.textContent, "what");
+            document.addEventListener("keydown", (e) => {
+                // console.log("WHAAA");
+                Array.from(cells).forEach(cell => {
+                // console.log(cell.textContent);
+                    cell.style.background = "white"
+                });
+                switch(event.keyCode) {
+                    case 37:
+                        console.log('Left arrow key pressed');
+                        coords[Object.keys(playerBoard.ships)[0]] = [];
+
+                        if (idx.charCodeAt(0) - 1 >= 65) {
+                            // idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1];
+                            idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1] + (idx[2] ? idx[2] : "")
+                            console.log("idx", idx, idx.charCodeAt(0), (idx.charCodeAt(0) - playerBoard.ships[Object.keys(playerBoard.ships)[0]]));
+                            
+                            
+                            // turnRed(htmlBoard, idx);
+
+
+                            // if ((idx.charCodeAt(0) - playerBoard.ships[Object.keys(playerBoard.ships)[0]]) >= 64) {
+                                // Check if block is occupied by ship
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                // Check if block is occupied by ship
+                                    // coords.push(String.fromCharCode(idx.charCodeAt(0) - (j+1)));
+                                    
+                                    // console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                                    // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+
+                                    console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    
+                                    // console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) - (j+1)) + idx[1])
+                                    // highLight(htmlBoard, String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                                }
+                                // console.log("wth")
+                            // }
+
+
+                            // if letter is minused by ship length, for example a shift left by 5 is still greater than A
+                            
+                            // if ((idx.charCodeAt(0) - playerBoard.ships[Object.keys(playerBoard.ships)[0]]) >= 64) {
+                            //     // Check if block is occupied by ship
+                            //     for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                            //     // Check if block is occupied by ship
+                            //         // coords.push(String.fromCharCode(idx.charCodeAt(0) - (j+1)));
+                                    
+                            //         // console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                            //         // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+
+                            //         console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                            //         coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    
+                            //         // console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) - (j+1)) + idx[1])
+                            //         // highLight(htmlBoard, String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                            //     }
+                            //     // console.log("wth")
+                            // }
+
+                            
+                        } else {
+                            // idx = "A" + idx[1]; // needs ternary operator
+                            idx = "A" + idx[1] + (idx[2] ? idx[2] : "");
+                            console.log("elsa");
+                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                            }
+                        }
+                        console.log("index", idx, coords);
+                        // console.log("index xxx", coords, idx, playerBoard.ships[Object.keys(playerBoard.ships)[0]] > 3);
+                        break;
+                    case 38:
+                        console.log('Up arrow key pressed', Number(idx[1] + (idx[2] ? idx[2] : "")));
+                        let num =  Number(idx[1] + (idx[2] ? idx[2] : ""))
+                        // if (Number(idx[1]) - 1 >= 1) {
+                        if (num - 1 >= 1) {
+                            // idx = idx[0] + (Number(idx[1]) - 1);
+                            idx = idx[0] + (num - 1)
+                            // turnRed(htmlBoard, idx);
+                        } else {
+                            idx = idx[0] + "1";
+                        }
+                        console.log("index", idx);
+                        break;
+                    case 39:
+                        console.log('Right arrow key pressed');
+                        coords[Object.keys(playerBoard.ships)[0]] = [];
+                        if (idx.charCodeAt(0) + 1 <= 74) {
+                            // idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1];
+                            // turnRed(htmlBoard, idx);
+                            // idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1];
+                            idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1] + (idx[2] ? idx[2] : "");
+                            console.log("idx", idx, idx.charCodeAt(0), (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]));
+    
+                            // While index is at F it goes to J
+                            if ((idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]) <= 75) {
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) + j) + idx[1], Object.keys(playerBoard.ships)[0]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    // highLight(htmlBoard, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                }
+                            } else {
+                                console.log("elsa 3")
+                                idx[0] = String.fromCharCode(75 - playerBoard.ships[Object.keys(playerBoard.ships)[0]]); // might need ternary operator 
+                            }
+                        } else {
+                            idx = "J" + idx[1] + (idx[2] ? idx[2] : ""); // Needs ternary operator
+                            ///
+
+                            // console.log("elsa", idx)
+
+                            // for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                            //     console.log(idx, "no", String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                            //     coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) - j) + idx[1]);
+                            // }
+
+
+                            ///
+                        }
+                        // idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1];
+                        console.log(idx, String.fromCharCode(idx.charCodeAt(0) + 1), idx.charCodeAt(0) + 1 <= 74);
+                        console.log("index", idx, coords);
+                        break;
+                    case 40:
+                        console.log('Down arrow key pressed');
+                        // if (Number(idx[1]) + 1 <= 10) {
+                        if (Number(idx[1]) + 1 <= 10 && !idx[2]) {
+                            idx = idx[0] + (Number(idx[1]) + 1);
+                            // turnRed(htmlBoard, idx);
+                            console.log("index", idx);
+                        } else {
+                            idx = idx[0] + 10;
+                        }
+                        console.log(idx, Number(idx[1]) + 1 <= 10, Number(idx[1]) + 1);
+                        break;
+                    case 13:
+                        console.log("Enter pressed");
+                        delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
+                        console.log(playerBoard.ships, "Ships");
+                }
+                // playerBoard.board[loc[0]+(idx)].ship = true;
+                // delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
+                // why = true;
+            });
+        }
+
+        // BattleShip cells change background colour on Mouse Hover
+        // Only IF ships are already placed
         function mouseGray(e) {
             // console.log(e, "mouseGray called");
             let arena = "";
@@ -430,21 +651,19 @@
                 // If ships are done being put in the board then continue to
                 // turn the boards gray
                 if (arena.shipsPlaced) {
-                    console.log("Ships are placed");
                     if (arena.board[e.target.innerText].hit !== true) {
                         e.target.style.backgroundColor = "gray";
                     } else {
                         e.target.style.backgroundColor = "black";
                     }
+                    console.log("Ships are placed");
                     return
-                } else if (arena.shipsPlaced === false) {
-                    e.target.style.backgroundColor = "red";
-                    rotateShips(arena, parentNode, e.target.innerText, e);
                 }
             }
         }
 
 
+        // BattleShip cells change back to white when mouse is not hovering them
         function mouseWhite(e) {
             // console.log(e, "mouseWhite called");
             let arena = "";
@@ -463,21 +682,10 @@
             }
         }
 
-        document.addEventListener("keydown", (e) => {
-                                console.log("WHAAA");
-                                playerBoard.board[loc[0]+(idx)].ship = true;
-                                delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
-                                why = true;
-                            });
+
 
         function rotateShips(playerBoard, htmlBoard, loc, e) {
-            // console.log(playerBoard.board, htmlBoard.childNodes[3].childNodes[1].childNodes);
-            // playerBoard.place();
-
-            let boardNodes = {
-
-            };
-
+            // console.log(playerBoard.board, htmlBoard.childNodes[3].childNodes[1].childNodes);            
             let why = false;
             let stop = 20;
             // while (playerBoard.shipsPlaced === false && why > 0) {
@@ -490,7 +698,6 @@
                 for (const ship of Object.entries(playerBoard.ships)) {
                     // console.log(ship[0], ship[1], "inner loops");
                     // place the ships
-                    // if ()
                     let shipLength = ship[1];
 
                     // Iterate through each ship's length
@@ -498,15 +705,8 @@
                         //playerBoardHorizontal
                         let idx = Number(loc[1]) + j;
                         if (idx <= 10 && !playerBoard.board[loc[0]+(idx)].ship) {
-                            // if (idx <= 10) {
-                            // console.log("jcole", playerBoard.board[loc[0]+(loc[1]+j)], loc[0]+(loc[1]+j));
                             playerBoard.board[loc[0]+(idx)].ship = true;
                             // console.log(ship[0], "jcole", playerBoard.board[loc[0]+(idx)], loc[0]+(idx), htmlBoard);
-
-                            // e.target.style.backgroundColor = "red";
-                            //
-                            //playerboardVertical
-                            // delete playerBoard.ships[ship[0]];
                         }
                     }
                 }
@@ -514,8 +714,6 @@
                 // if (playerBoard.board[loc]) {
                 //     console.log("we are in business");
                 // }
-
-                // why--;
                 stop--;
             }
 
@@ -523,42 +721,59 @@
             playerBoard.updateShipsPlaced();
             console.log("SHIP? ", Object.keys(playerBoard.ships)[0], playerOne.ships, Object.getOwnPropertyDescriptor(playerOne.ships, "Patrol"), Object.getOwnPropertyDescriptor(playerBoard.ships, "Patrol"));
 
-
-
             return playerBoard.shipsPlaced
-            // for (const ship of Object.entries(playerBoard.ships)) {
-            //     console.log(ship[0], ship[1], "inner loops");
-            // }
-
-            // This code goes through both boards, need to narrow it down to just one board
-            // for (const tag of document.querySelectorAll("td")) {
-            // for (const tag of htmlBoard.childNodes[3].childNodes[3].childNodes) {
-            //     if (tag.textContent.includes(`${loc[0]}`)){
-            //         console.log(tag.textContent, "inner loops");
-            //         tag.style.backgroundColor = "gray";
-            //     }
-            // }
-
-            // if (placed === false) {
-            //     document.getElementById("battleShipsTwo");
-            //     // const nodeList = parentNode.childNodes;
-            //     // let row = e.target.innerText[1] - 1;
-            //     // console.log("Rows", e.target.innerText[1], nodeList[3].rows[row], nodeList[3].rows[9].cells[10]);
-            //     // for (const tag of document.querySelectorAll("td")) {
-            //     //     if (tag.textContent.includes(`${e.target.innerText[0]}`)){
-            //     //         console.log(tag.textContent, "inner loops");
-            //     //         tag.style.backgroundColor = "gray";
-            //     //     }
-            //     // }
-            //     placed = true;
-            // }
-            // return placed
         }
 
-        // rotateShips(playerOne, false);
+        // function mouseGray(e) {
+        //     // console.log(e, "mouseGray called");
+        //     let arena = "";
+        //     let parentNode = "";
 
-        // module.exports = {
-        //     Position
+        //     if (e.toElement.nodeName === "TD") {
+        //         if (e.target.parentElement.id.split("-")[0] === "header") {
+        //             arena = playerOne;
+        //             parentNode = document.getElementById("battleShips");
+        //         } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+        //             arena = playerTwo;
+        //             parentNode = document.getElementById("battleShipsTwo");
+        //         }
+
+        //         // console.log(arena.shipsPlaced, "DONE")
+                
+        //         // If ships are done being put in the board then continue to
+        //         // turn the boards gray
+        //         if (arena.shipsPlaced) {
+        //             console.log("Ships are placed");
+        //             if (arena.board[e.target.innerText].hit !== true) {
+        //                 e.target.style.backgroundColor = "gray";
+        //             } else {
+        //                 e.target.style.backgroundColor = "black";
+        //             }
+        //             return
+        //         } else if (arena.shipsPlaced === false) {
+        //             e.target.style.backgroundColor = "red";
+        //             rotateShips(arena, parentNode, e.target.innerText, e);
+        //         }
+        //     }
+        // }
+
+
+        // function mouseWhite(e) {
+        //     // console.log(e, "mouseWhite called");
+        //     let arena = "";
+        //     if (e.fromElement.nodeName === "TD") {
+        //         // console.log(playerOne.board[e.target.innerText], e.target.innerText);
+        //         // console.log(e.target.parentElement.id.split("-")[0]);
+        //         if (e.target.parentElement.id.split("-")[0] === "header") {
+        //             arena = playerOne;
+        //         } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+        //             arena = playerTwo;
+        //         }
+        //         if (arena.board[e.target.innerText].hit !== true) {
+        //             // console.log("Mouse White", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
+        //             e.target.style.backgroundColor = "white";
+        //         }
+        //     }
         // }
     </script>
 </body>

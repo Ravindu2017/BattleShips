@@ -353,8 +353,30 @@
     </table>
 
     <script>
+    
+        // document.getElementById("battleShips").addEventListener("click", myFunc);
+        // document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
+
         let turn = false;
 
+        // class Position {
+        //     constructor(width, depth){
+        //         this.width = width;
+        //         this.depth = depth;
+        //         this.hit = null;
+        //         this.ship = null;
+        //     }
+        // }
+
+        // class Gameboard {
+        //     // constructor() {
+        //     //     this.board = board;
+        //     // }
+            
+        //     append(x, y){
+        //         const squares = new Position(x, y);
+        //     }
+        // }
         const playerOne = new Gameboard();
         const playerTwo = new Gameboard();
 
@@ -367,7 +389,37 @@
         playerOne.place();
         playerTwo.place();
 
+        // placeShips(playerOne);
+        // placeShips(playerTwo);
+
+        // function placeShips(board){
+        //     console.log(board, "board", board.shipsPlaced);
+        //     // if (board.htmlID === "battleShips") {
+
+        //     // } else if (board.htmlID = "battleShipsTwo") {
+
+        //     // }
+        //     let why = 2;
+        //     while (board.shipsPlaced === false && why > 0) {
+        //         board.place();
+        //         board.updateShipsPlaced();
+
+        //         for (const ship of Object.entries(board.ships)) {
+        //             console.log(ship[0], ship[1], "inner loops");
+        //             // place the ships
+        //             // if ()
+        //             delete board.ships[ship[0]]
+        //         }
+        //         if (board.board[e.target.innerText]) {
+        //             console.log("we are in business");
+        //         }
+        //         why--;
+        //     }
+        // }
+
+
         function myFunc(e){
+            // let turn = false;
             console.log(e.toElement, e);
             if (!(e.target.nodeName === "TD")) {
                 return
@@ -398,23 +450,53 @@
 
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
+            // return location
         }
 
         document.getElementById("battleShips").addEventListener("click", myFunc);
         document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
 
-        document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray);
-        document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
+        document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray
+            // (e) => {
+            //     if (e.toElement.nodeName === "TD") {
+            //         // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement);
+            //         // console.log("GARY");
+            //         if (playerTwo.board[e.target.innerText].hit !== true) {
+            //             // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement.id);
+            //             console.log("GARY", playerTwo.board[e.target.innerText].hit);
+            //             // console.log(e.target.parentElement.id.split("-")[0]);
+            //             e.target.style.backgroundColor = "grey";
+            //         }
+            //     }
+            // }
+        );
+
+        document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite
+            // (e) => {
+            //     if (e.fromElement.nodeName === "TD") {
+            //         // console.log(playerOne.board[e.target.innerText], e.target.innerText);
+            //         // console.log(e.target.parentElement.id.split("-")[0]);
+            //         if (playerTwo.board[e.target.innerText].hit !== true) {
+            //             console.log("GARY white", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
+            //             e.target.style.backgroundColor = "white";
+            //         }
+            //     }
+            // }
+        );
 
 
         // Let's execute these functions only after the ships have been placed
         document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
         document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
 
+        // let shipsPlzaced = false;
+
         function mouseGray(e) {
             // console.log(e, "mouseGray called");
+            
             let arena = "";
             let parentNode = "";
+            // console.log(e.target.toElement);
 
             if (e.toElement.nodeName === "TD") {
                 if (e.target.parentElement.id.split("-")[0] === "header") {
@@ -425,25 +507,103 @@
                     parentNode = document.getElementById("battleShipsTwo");
                 }
 
-                // console.log(arena.shipsPlaced, "DONE")
-                
+                //  this should later be replaced by checking object property
+                //  such as arena.shipsPlaced
+                console.log(arena.shipsPlaced, "DONE")
                 // If ships are done being put in the board then continue to
                 // turn the boards gray
                 if (arena.shipsPlaced) {
-                    console.log("Ships are placed");
+                    console.log("return");
                     if (arena.board[e.target.innerText].hit !== true) {
                         e.target.style.backgroundColor = "gray";
-                    } else {
-                        e.target.style.backgroundColor = "black";
                     }
                     return
                 } else if (arena.shipsPlaced === false) {
                     e.target.style.backgroundColor = "red";
                     rotateShips(arena, parentNode, e.target.innerText, e);
                 }
+
+                // if (e.toElement.nodeName === "TD") {
+                    // if (arena.board[e.target.innerText].hit !== true) {
+                    //     e.target.style.backgroundColor = "gray";
+                    // }
+                // }
             }
         }
 
+        // function mouseGray(e) {
+        //     // console.log(e, "mouseGray called");
+            
+        //     let arena = "";
+        //     let parentNode = "";
+        //     // console.log(e.target.toElement);
+
+        //     if (e.target.parentElement.id.split("-")[0] === "header") {
+        //         arena = playerOne;
+        //         parentNode = document.getElementById("battleShips");
+        //     } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+        //         arena = playerTwo;
+        //         parentNode = document.getElementById("battleShipsTwo");
+        //     }
+
+
+        //     // this should later be replaced by checking object property
+        //     // such as arena.shipsPlaced
+        //     let areShipsDone = rotateShips(arena, parentNode, e.target.innerText, e);
+        //     // console.log(areShipsDone, "DONE")
+        //     if (!areShipsDone) {
+        //         console.log("return");
+        //         return
+        //     }
+
+        //     if (e.toElement.nodeName === "TD") {
+        //         // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement);
+        //         // console.log("GARY");
+        //         // if (e.target.parentElement.id.split("-")[0] === "header") {
+        //         //     arena = playerOne;
+        //         //     parentNode = document.getElementById("battleShips");
+        //         // } else if (e.target.parentElement.id.split("-")[0] === "footer") {
+        //         //     arena = playerTwo;
+        //         //     parentNode = document.getElementById("battleShipsTwo");
+        //         // }
+
+        //         // let areShipsDone = rotateShips(arena, parentNode, e.target.innerText);
+
+        //         // if (areShipsDone) {
+        //         //     console.log("return");
+        //         //     return
+        //         // }
+
+        //         // rotateShips(arena, parentNode, e.target.innerText);
+        //         // if (rotateShips(arena, parentNode, e.target.innerText) === false) {
+        //         //     return
+        //         // }
+
+        //         // let areShipsDone = rotateShips(arena, parentNode, e.target.innerText);
+        //         // console.log("done", areShipsDone);
+        //         // if (rotateShips(arena, parentNode, shipsPlaced, e.target.innerText) === false) {
+        //         // if (areShipsDone) {
+        //         //     console.log("return");
+        //         //     return
+        //         // }
+
+        //         if (arena.board[e.target.innerText].hit !== true) {
+                    
+        //             // console.log(e, e.toElement.nodeName, e.target.innerText, e.target.parentElement.id);
+        //             // console.log("Mouse Gray", playerTwo.board[e.target.innerText].hit);
+        //             // console.log(e.target.parentElement.id.split("-")[0], e.target.innerText[0], e, nodeList[3].children, nodeList[3].rows);
+                    
+        //             // document.getElementByTagName()
+        //             // for (const tag of document.querySelectorAll("td")) {
+        //             //     if (tag.textContent.includes(`${e.target.innerText[0]}`)){
+        //             //         console.log(tag.textContent, "inner loops");
+        //             //         tag.style.backgroundColor = "gray";
+        //             //     }
+        //             // }
+        //             e.target.style.backgroundColor = "gray";
+        //         }
+        //     }
+        // }
 
         function mouseWhite(e) {
             // console.log(e, "mouseWhite called");

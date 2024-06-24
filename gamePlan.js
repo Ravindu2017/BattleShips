@@ -23,6 +23,7 @@ class Gameboard {
         // this.shipsPlaced = true;
         this.shipsPlaced = false;
         this.boolShips = {};
+        this.htmlID = "";
     }
     
     append(x, y){
