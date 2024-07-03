@@ -31,6 +31,13 @@
             padding: 20px;
         }
 
+        #rotateBtn {
+            height: 100px;
+            width: 150px;
+            font-size: x-large;
+            float: right;
+        }
+
         /* #battleShips td:hover {
             background-color: gray;
             /* border: 2px solid;
@@ -52,6 +59,9 @@
     <script src="gamePlan.js"></script>
 </head>
 <body>
+    <button id="rotateBtn" type="button">
+        rotate
+    </button>
     <table id="battleShips">
         <thead>
             <tr>
@@ -354,6 +364,7 @@
 
     <script>
         let turn = false;
+        let shift = false;
 
         const playerOne = new Gameboard();
         const playerTwo = new Gameboard();
@@ -413,9 +424,11 @@
         // Let's execute these functions only after the ships have been placed
         document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
         document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
+        document.getElementById("rotateBtn").addEventListener("click", rotate);
 
         function red(cell){
             cell.style.background = "pink";
+
         }
 
         function turnRed(htmlBoard, val){
@@ -452,6 +465,12 @@
                 "Patrol":       [],
             }
 
+        
+        function rotate() {
+            // return rotate = true;
+            shift = !shift;
+            console.log("rotate clicked", shift);
+        }
             
         // Ship placement function
         function placeTheShips(playerBoard, htmlBoard, idx) {
@@ -496,105 +515,278 @@
                         console.log('Left arrow key pressed', idx, String.fromCharCode(idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] - 1));
                         coords[Object.keys(playerBoard.ships)[0]] = [];
 
-                        if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
-                            // idx = Letter + first number + second number if it exists
-                            if (idx[0] === "A") {
-                                idx = String.fromCharCode(idx.charCodeAt(0)) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log("idx left is", idx, idx.charCodeAt(0), playerBoard.ships[Object.keys(playerBoard.ships)[0]], idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]);
+                        if (shift === false) {
+
+                            if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
+                                // idx = Letter + first number + second number if it exists
+                                if (idx[0] === "A") {
+                                    idx = String.fromCharCode(idx.charCodeAt(0)) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log("idx left is", idx, idx.charCodeAt(0), playerBoard.ships[Object.keys(playerBoard.ships)[0]], idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]);
+
+                                } else {
+                                    idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log("idx left is", idx, idx.charCodeAt(0), playerBoard.ships[Object.keys(playerBoard.ships)[0]], idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]);
+                                }
+                    
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log(idx, "yes", j, String.fromCharCode(idx.charCodeAt(0) - j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(letters);
+                                    turnRed(htmlBoard, letters);
+                                }
 
                             } else {
                                 idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log("idx left is", idx, idx.charCodeAt(0), playerBoard.ships[Object.keys(playerBoard.ships)[0]], idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]]);
+                                console.log(idx, "elsa");
+
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log(idx, "no", letters);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(letters);
+                                    turnRed(htmlBoard, letters);
+                                }
                             }
-                  
-                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log(idx, "yes", j, String.fromCharCode(idx.charCodeAt(0) - j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
-                                coords[Object.keys(playerBoard.ships)[0]].push(letters);
-                                turnRed(htmlBoard, letters);
+                        
+                        } else if (shift === true) {
+
+                            if (idx[2] === "0") {
+                                idx = idx[0] + (Number(idx[1]+idx[2]) - (playerBoard.ships[Object.keys(playerBoard.ships)[0]] - 1));
                             }
 
-                        } else {
-                            idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1] + (idx[2] ? idx[2] : "");
-                            console.log(idx, "elsa");
+                            // have to make sure squares are within 1 and 10 and A and J
 
-                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log(idx, "no", letters);
-                                coords[Object.keys(playerBoard.ships)[0]].push(letters);
-                                turnRed(htmlBoard, letters);
+                            // if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
+                            //  75 is 'K'
+                            // console.log(idx.charCodeAt(0), "idx charcode", idx[0]);
+                            // We are going the downward direction
+                            // If conditions are
+                            // if letter is not 'K' and square index number + ship length (down direction) is not greater than 11
+                            if (idx.charCodeAt(0) >= 66 && Number(idx[1]) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] <= 11) {
+                                // update idx value from e.g. 'A1' to 'B1'
+                                idx = String.fromCharCode(idx.charCodeAt(0) - 1) + idx[1] + (idx[2] ? idx[2] : "");
+                                console.log("shift left rotate", idx, idx.charCodeAt(0));
+
+                                //  Iterate ship length
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+
+                                    // letters = 'A' + 1 + 1 => 'A1', 'A2', 'A3'
+                                    let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
+                                    console.log(idx, letters, Object.keys(playerBoard.ships)[0]);
+                                    // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
+                            } else {
+                                // idx = String.fromCharCode(idx.charCodeAt(0) - 1)+ idx[1] + (idx[2] ? idx[2] : "");
+                                idx = "A"+ idx[1] + (idx[2] ? idx[2] : "");
+                                console.log(idx);
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    // let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
+                                    console.log(idx, "no", letters,  Object.keys(playerBoard.ships)[0]);
+                                    // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
                             }
+
                         }
 
                         break;
                     case 39:
                         console.log('Right arrow key pressed');
-                        if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
-                            idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1] + (idx[2] ? idx[2] : "");
-                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                                // This might need idx[2]
-                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
-                                coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
-                                turnRed(htmlBoard, letters);
+                        if (shift === false) {
+
+                            if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] > 75) {
+                                console.log("it works in this conditions");
+                                idx = String.fromCharCode(idx.charCodeAt(0) - playerBoard.ships[Object.keys(playerBoard.ships)[0]]) + idx[1] + (idx[2] ? idx[2] : "");
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log(idx, letters,  Object.keys(playerBoard.ships)[0]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
                             }
-                        } else {
-                            console.log(idx);
-                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                                // This might need idx[2]
-                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
-                                coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
-                                turnRed(htmlBoard, letters);
+
+                            else if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
+                                idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1] + (idx[2] ? idx[2] : "");
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
+                            } else {
+                                console.log(idx);
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
+                                    coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
                             }
+
+                        // Rotate button is clicked
+                        } else if (shift === true) {
+
+                            console.log(idx, "right arrow shift");
+                            
+                            if (idx[2] === "0") {
+                                idx = idx[0] + (Number(idx[1]+idx[2]) - (playerBoard.ships[Object.keys(playerBoard.ships)[0]] - 1));
+                            }
+
+                            // have to make sure squares are within 1 and 10 and A and J
+
+                            // if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 75) {
+                            //  75 is 'K'
+                            // console.log(idx.charCodeAt(0), "idx charcode", idx[0]);
+                            // We are going the downward direction
+                            // If conditions are
+                            // if letter is not 'K' and square index number + ship length (down direction) is not greater than 11
+                            if (idx.charCodeAt(0) < 74 && Number(idx[1]) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] <= 11) {
+                                // update idx value from e.g. 'A1' to 'B1'
+                                idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1] + (idx[2] ? idx[2] : "");
+                                console.log("shift true", idx);
+
+                                //  Iterate ship length
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+
+                                    // letters = 'A' + 1 + 1 => 'A1', 'A2', 'A3'
+                                    let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
+                                    console.log(idx, letters, Object.keys(playerBoard.ships)[0]);
+                                    // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
+                            } else {
+                                // idx = String.fromCharCode(idx.charCodeAt(0) - 1)+ idx[1] + (idx[2] ? idx[2] : "");
+                                idx = "J"+ idx[1] + (idx[2] ? idx[2] : "");
+                                console.log(idx);
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    // let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
+                                    let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
+                                    console.log(idx, "no", letters,  Object.keys(playerBoard.ships)[0]);
+                                    // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                    turnRed(htmlBoard, letters);
+                                }
+                            }
+
                         }
-                        
+
                         break;
                     case 38:
                         console.log('Up arrow key pressed', idx);
-                        for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                            let ref = "";
+                        if (shift === false) {
 
-                            if (Number(idx[2]) === 0) {
-                                ref = 9;
-                            } else if (Number(idx[1]) === 1 && Number(idx[2]) !== 0) {
-                                ref = 1;
-                            } else {
-                                ref = Number(idx[1]) - 1;
+                            // if it is too far right
+                            if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] > 75) {
+                                idx = String.fromCharCode(75 - playerBoard.ships[Object.keys(playerBoard.ships)[0]]) + idx[1] + (idx[2] ? idx[2] : "");
                             }
-                           
-                            let letters = String.fromCharCode(idx.charCodeAt(0) + j) + ref;
-                            console.log(letters, idx, "up arrow", (Number(idx[1]) === 1 && idx[2] === "0" ? 9 : Number(idx[1]) - 1), "check thrice", ref)
-                            turnRed(htmlBoard, letters);
-                        }
+
+
+                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                let ref = "";
+
+                                if (Number(idx[2]) === 0) {
+                                    ref = 9;
+                                } else if (Number(idx[1]) === 1 && Number(idx[2]) !== 0) {
+                                    ref = 1;
+                                } else {
+                                    ref = Number(idx[1]) - 1;
+                                }
+                            
+                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + ref;
+                                console.log(letters, idx, "up arrow", (Number(idx[1]) === 1 && idx[2] === "0" ? 9 : Number(idx[1]) - 1), "check thrice", ref)
+                                turnRed(htmlBoard, letters);
+                            }
                         
-                        let pick = "";
-                        
-                        if (Number(idx[2]) === 0) {
-                                pick = 9;
-                            } else if (Number(idx[1]) === 1 && Number(idx[2]) !== 0) {
-                                pick = 1;
+                            let pick = "";
+                            
+                            if (Number(idx[2]) === 0) {
+                                    pick = 9;
+                                } else if (Number(idx[1]) === 1 && Number(idx[2]) !== 0) {
+                                    pick = 1;
+                                } else {
+                                    pick = Number(idx[1]) - 1;
+                            }
+                            
+                            idx = idx[0] + pick;
+                        } else if (shift === true) {
+
+                            if (idx[2] === "0") {
+                                idx = idx[0] + (Number(idx[1]+idx[2]) - (playerBoard.ships[Object.keys(playerBoard.ships)[0]] - 1));
+                            }
+
+                            console.log("up idx", idx)
+                            if (Number(idx[1]) > 1) {
+                                idx = idx[0] + (Number(idx[1]) - 1);
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    let letters = idx[0] + (Number(idx[1]) + j)
+                                    console.log(letters, idx, "up arrow rotate");
+                                    turnRed(htmlBoard, letters);
+                                }
                             } else {
-                                pick = Number(idx[1]) - 1;
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    let letters = idx[0] + (Number(idx[1]) + j)
+                                    console.log(letters, idx, "up arrow rotate");
+                                    turnRed(htmlBoard, letters);
+                                }
+                            }
+
                         }
                         
-                        idx = idx[0] + pick;
                         break;
                     case 40:
                         console.log('Down arrow key pressed', idx);
-                        for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
-                            // This might need idx[2]
-                            let letters = String.fromCharCode(idx.charCodeAt(0) + j) + (Number(idx[1]) +  (idx[2] ? idx[2] : Number(1)));
-                            console.log(letters, idx, "down arrow", Number(idx[1]) +  (idx[2] ? idx[2] : Number(1)))
-                            // console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
-                            // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
-                            // highLight(htmlBoard, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
-                            turnRed(htmlBoard, letters);
-                            // idx = idx[0] + (Number(idx[1]) + (idx[2] ? idx[2] : Number(1)));
+                        if (shift === false) {
+
+                            // if it is too far right
+                            if (idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] > 75) {
+                                idx = String.fromCharCode(75 - playerBoard.ships[Object.keys(playerBoard.ships)[0]]) + idx[1] + (idx[2] ? idx[2] : "");
+                            }
+                            
+                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                // This might need idx[2]
+                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + (Number(idx[1]) +  (idx[2] ? idx[2] : Number(1)));
+                                console.log(letters, idx, "down arrow", Number(idx[1]) + (idx[2] ? idx[2] : Number(1)))
+                                // console.log(idx, "no", j, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] , letters,  Object.keys(playerBoard.ships)[0]);
+                                // coords[Object.keys(playerBoard.ships)[0]].push(String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                // highLight(htmlBoard, String.fromCharCode(idx.charCodeAt(0) + j) + idx[1]);
+                                turnRed(htmlBoard, letters);
+                                // idx = idx[0] + (Number(idx[1]) + (idx[2] ? idx[2] : Number(1)));
+                            }
+                        
+                            idx = idx[0] + (Number(idx[1]) + (idx[2] ? idx[2] : Number(1)));
+                            // coords[Object.keys(playerBoard.ships)[0]] = [];
+                        } else if (shift === true) {
+
+                            if (idx[2] === "0") {
+                                idx = idx[0] + (Number(idx[1]+idx[2]) - playerBoard.ships[Object.keys(playerBoard.ships)[0]]);
+                            }
+
+                            if (Number(idx[1]) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] < 11) {
+                                idx = idx[0] + (Number(idx[1]) + 1);
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    let letters = idx[0] + (Number(idx[1]) +  j);
+                                    console.log(letters, idx, "down arrow");
+                                    turnRed(htmlBoard, letters);
+                                }
+                            } else {
+                                for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                    // This might need idx[2]
+                                    let letters = idx[0] + (Number(idx[1]) +  j);
+                                    console.log(letters, idx, "down arrow");
+                                    turnRed(htmlBoard, letters);
+                                }
+                            }
+                            
+                            // coords[Object.keys(playerBoard.ships)[0]] = [];
+
                         }
                         
-                        idx = idx[0] + (Number(idx[1]) + (idx[2] ? idx[2] : Number(1)));
-                        // coords[Object.keys(playerBoard.ships)[0]] = [];
                         break;
                     case 13:
                         console.log("Enter pressed");
