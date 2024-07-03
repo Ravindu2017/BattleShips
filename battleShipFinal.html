@@ -458,13 +458,20 @@
         }
 
         const coords = {
-                "Carrier":      [],
-                "Battleship":   [],
-                "Destroyer":    [],
-                "Submarine":    [],
-                "Patrol":       [],
-            }
+            "Carrier":      [],
+            "Battleship":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        }
 
+        const shipCoordinates = {
+            "Carrier":      [],
+            "Battleship":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        }
         
         function rotate() {
             // return rotate = true;
@@ -790,8 +797,39 @@
                         break;
                     case 13:
                         console.log("Enter pressed");
-                        delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
+                        console.log(idx, "ENTER ENTER");
+                        // delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
                         console.log(playerBoard.ships, "Ships");
+
+                        if (shift === false) {
+
+                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                // This might need idx[2]
+                                let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] +  (idx[2] ? idx[2] : "");
+                                // String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "")
+                                console.log(letters, idx, "enter button no shift");
+                                // turnRed(htmlBoard, letters);
+                                shipCoordinates[Object.keys(playerBoard.ships)[0]].push(letters);
+                                coords[Object.keys(playerBoard.ships)[0]].push(letters);
+                                delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
+                            }
+
+                        } else if (shift === true) {
+
+                            for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
+                                // This might need idx[2]
+                                let letters = idx[0] + (Number(idx[1]) +  j);
+                                console.log(letters, idx, "enter button shift");
+                                // turnRed(htmlBoard, letters);
+                                shipCoordinates[Object.keys(playerBoard.ships)[0]].push(letters);
+                                delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
+                            }
+
+                            // console.log(shipCoordinates);
+                        }
+
+                        console.log(shipCoordinates, coords, "shipCoordinates");
+
                         break;
                 }
 
