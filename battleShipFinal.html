@@ -442,6 +442,17 @@
             });
         }
 
+        // function turnRed(htmlBoard, val){
+        //     playerBoard.board[val].ship = true;
+        //     const table = document.getElementById(htmlBoard);
+        //     const cells = table.getElementsByTagName("td");
+        //     Array.from(cells).forEach(cell => {
+        //         if (cell.textContent === val) {
+        //             cell.style.background = "pink"
+        //         }
+        //     });
+        // }
+
         function highLight(htmlBoard, val){
             // playerBoard.board[val].ship = true;
             const table = document.getElementById(htmlBoard);
@@ -476,7 +487,29 @@
         let deleteShip = false;
 
 
-        function shipThere(xy, positions, key) {
+        // function shipThere(xy, positions, key) {
+        //     let occupiedCoordinates = []
+
+        //     for (pos of Object.keys(positions)) {
+        //         occupiedCoordinates.push(...positions[pos]);
+        //         console.log(positions[pos], "post", occupiedCoordinates);
+        //     }
+
+        //     // I'm comparing coordinate list, occupied coordinates
+        //     // with coordinate set, xy
+        //     const result = xy.some(element => occupiedCoordinates.includes(element));
+
+        //     if (result) {
+        //         console.log("Cannot place ship here");
+        //         deleteShip = false;
+        //     } else {
+        //         positions[key].push(...xy);
+        //         deleteShip = true;
+        //     }
+
+        // }
+
+        function shipThere(xy, positions, key, player) {
             let occupiedCoordinates = []
 
             for (pos of Object.keys(positions)) {
@@ -493,9 +526,12 @@
                 deleteShip = false;
             } else {
                 positions[key].push(...xy);
+                player.setLocation(key, xy)
                 deleteShip = true;
             }
 
+            playerOne.ships["Carrier"] += (-1);
+            console.log(playerOne.coordinates, playerOne.ships["Carrier"]);
         }
 
         function rotate() {
@@ -761,7 +797,8 @@
                                 place.push(letters);
                             }
 
-                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
+                            // shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
+                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard);
 
                             if (deleteShip) {
                                 delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
@@ -776,8 +813,9 @@
                                 place.push(letters);
                             }
 
-                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
-                            
+                            // shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
+                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard);
+
                             if (deleteShip) {
                                 delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
                             }

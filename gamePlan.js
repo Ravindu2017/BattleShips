@@ -24,9 +24,20 @@ class Gameboard {
         this.shipsPlaced = false;
         this.boolShips = {};
         this.htmlID = "";
+        this.coordinates = {
+            "Carrier":      [],
+            "BattleShip":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        };
+    }
+
+    setLocation(key, value) {
+        this.coordinates[key].push(...value);
     }
     
-    append(x, y){
+    append(x, y) {
         if (this.board[x+y]) {
             return "object exists"
         }
@@ -117,8 +128,9 @@ delete gameState.ships.Submarine
 console.log(gameState.shipsPlaced);
 // gameState.ships = {};
 gameState.updateShipsPlaced();
-console.log(gameState.ships, Object.keys(gameState.ships).length <= 0, gameState.shipsPlaced, gameState.currentShips());
-
+// console.log(gameState.ships, Object.keys(gameState.ships).length <= 0, gameState.shipsPlaced, gameState.currentShips(), gameState.setLocation("Patrol", "A1", "A2", "A3"));
+// console.log(gameState.ships, Object.keys(gameState.ships).length <= 0, gameState.currentShips(), gameState.setLocation("Patrol", "A1", "A2", "A3"));
+// console.log(gameState.setLocation("Patrol", ["A1", "A2", "A3"]), gameState.coordinates);
 // console.log(gameState.board["A10"].hit, gameState.board["F2"].ship, what, String.fromCharCode(65))//, charCodeAt(165))
 // console.log(gameState.board);
 // module.exports = {
