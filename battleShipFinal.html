@@ -62,6 +62,10 @@
     <button id="rotateBtn" type="button">
         rotate
     </button>
+
+    <button id="removeBtn" type="button">
+        remove some Ship
+    </button>
     <table id="battleShips">
         <thead>
             <tr>
@@ -363,7 +367,8 @@
     </table>
 
     <script>
-        let turn = false;
+        // let turn = false;
+        let turn = true;
         let shift = false;
 
         const playerOne = new Gameboard();
@@ -379,6 +384,13 @@
         playerTwo.place();
 
         function myFunc(e){
+            // change this function to only work
+            // after all ships have been placed
+
+            if (playerOne.gameOver || playerTwo.gameOver) {
+                console.log("game over");
+            }
+
             console.log(e.toElement, e);
             if (!(e.target.nodeName === "TD")) {
                 return
@@ -407,8 +419,28 @@
 
             console.log(currentBoard.board);
 
+            // start coding from HERE!
+
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
+
+            
+        
+            for (ship of Object.keys(currentBoard.coordinates)) {
+
+                const index = currentBoard.coordinates[ship].indexOf(e.target.innerText);
+                if (index > -1) { // only splice array when item is found
+                    currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
+                    console.log("ship removed", currentBoard.coordinates[ship]);
+                }
+
+                // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
+                //     // Code Here
+                //     console.log("SHIP HIT");
+                // } else {
+                //     console.log("MISS")
+                // }
+            }
         }
 
         document.getElementById("battleShips").addEventListener("click", myFunc);
@@ -425,6 +457,7 @@
         document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
         document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
         document.getElementById("rotateBtn").addEventListener("click", rotate);
+        document.getElementById("removeBtn").addEventListener("click", removeShip);
 
         function red(cell){
             cell.style.background = "pink";
@@ -526,12 +559,23 @@
                 deleteShip = false;
             } else {
                 positions[key].push(...xy);
-                player.setLocation(key, xy)
+                player.setLocation(key, xy);
                 deleteShip = true;
             }
 
-            playerOne.ships["Carrier"] += (-1);
-            console.log(playerOne.coordinates, playerOne.ships["Carrier"]);
+            // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
+            console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
+        }
+
+
+        function removeShip() {
+            for (ship of Object.keys(playerOne.coordinates)) {
+                console.log(ship, playerOne.coordinates[ship]);
+
+                if (playerOne.coordinates[ship].includes("A1")) {
+                    console.log("SHIP HERE");
+                }
+            }
         }
 
         function rotate() {

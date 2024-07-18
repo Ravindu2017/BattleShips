@@ -6,6 +6,7 @@ class Position {
         this.depth = depth;
         this.hit = null;
         this.ship = null;
+        this.gameOver = false;
         // this.fleet = {
         //     "carrier":      5,}
         //     "BattleShip":   4,
@@ -35,6 +36,10 @@ class Gameboard {
 
     setLocation(key, value) {
         this.coordinates[key].push(...value);
+    }
+
+    healthPoints(key, value) {
+        return this.coordinates[key].length
     }
     
     append(x, y) {
