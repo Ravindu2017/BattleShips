@@ -370,6 +370,7 @@
         // let turn = false;
         let turn = true;
         let shift = false;
+        let playerTwoTurn = false;
 
         const playerOne = new Gameboard();
         const playerTwo = new Gameboard();
@@ -386,9 +387,15 @@
         function myFunc(e){
             // change this function to only work
             // after all ships have been placed
+            // playerOne.gameOver();
+            // playerTwo.gameOver();
 
-            if (playerOne.gameOver || playerTwo.gameOver) {
-                console.log("game over");
+            if (playerOne.allOver) {
+                return
+            }
+            
+            if (playerTwo.allOver) {
+                return
             }
 
             console.log(e.toElement, e);
@@ -413,13 +420,31 @@
 
             if (depth[0] === "header") {
                 currentBoard = playerOne;
+                currentBoard.name = "Player One";
             } else if (depth[0] === "footer") {
                 currentBoard = playerTwo;
+                currentBoard.name = "Player Two";
             }
 
-            console.log(currentBoard.board);
+            // currentBoard.gameOver();
+            // console.log(currentBoard.board, currentBoard.allOver, "game done?");
+
+            // if (currentBoard.allOver) {
+            //     window.alert(`${currentBoard.name} loses`);
+            // }
+            // // currentBoard.gameOver();
+
+            // console.log(currentBoard.currentShips(), currentBoard.allOver);
+
+            // if (currentBoard.allOver) {
+            //     console.log(`${currentBoard.name} loses`);
+            //     window.alert(`${currentBoard.name} loses`)
+            // }
 
             // start coding from HERE!
+            // create reference to removeShip function 
+            // which will pop off the coord for the ship object
+            // removeShip(currentBoard.coordinates, e.target.innerText)
 
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
@@ -431,7 +456,7 @@
                 const index = currentBoard.coordinates[ship].indexOf(e.target.innerText);
                 if (index > -1) { // only splice array when item is found
                     currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
-                    console.log("ship removed", currentBoard.coordinates[ship]);
+                    console.log("ship removed", currentBoard.coordinates[ship], ship);
                 }
 
                 // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
@@ -441,6 +466,20 @@
                 //     console.log("MISS")
                 // }
             }
+
+            currentBoard.gameOver();
+            console.log(currentBoard.board, currentBoard.allOver, "game done?");
+
+            if (currentBoard.allOver) {
+                window.alert(`${currentBoard.name} loses`);
+            }
+            // currentBoard.gameOver();
+
+            console.log(currentBoard.currentShips(), currentBoard.allOver);
+
+            // Check ship health 18th July 2024
+            // currentBoard.gameOver()
+            // console.log(currentBoard.currentShips(), currentBoard.allOver);
         }
 
         document.getElementById("battleShips").addEventListener("click", myFunc);
@@ -450,7 +489,20 @@
         document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
 
         placeTheShips(playerOne, "battleShips", "A1");
-        // placeTheShips(playerOne, "battleShips", "A1");
+        // placeTheShips(playerTwo, "battleShipsTwo", "A1");
+
+        // for (let k = 0; k < 17; k++) {
+        //     playerOne.updateState();
+        // }
+
+
+
+        // while (playerOne.gameSet === false) {
+        //     placeTheShips(playerOne, "battleShips", "A1");
+        //     playerOne.begin();
+        // }
+
+        // placeTheShips(playerTwo, "battleShips", "A1");
         
 
         // Let's execute these functions only after the ships have been placed
@@ -542,12 +594,18 @@
 
         // }
 
+        function clearCoordinates(obj) {
+            Object.keys(obj).forEach(key => {
+                obj[key] = [];
+            });
+        }
+
         function shipThere(xy, positions, key, player) {
             let occupiedCoordinates = []
 
             for (pos of Object.keys(positions)) {
                 occupiedCoordinates.push(...positions[pos]);
-                console.log(positions[pos], "post", occupiedCoordinates);
+                // console.log(positions[pos], "post", occupiedCoordinates);
             }
 
             // I'm comparing coordinate list, occupied coordinates
@@ -563,6 +621,16 @@
                 deleteShip = true;
             }
 
+            player.updateState();
+            console.log(playerOne.gameSet);
+
+            // if playerOne is done and playerTwo isn't
+            if (playerOne.gameSet === true && playerTwoTurn === false) {
+                playerTwoTurn = true;
+                clearCoordinates(shipCoordinates);
+                placeTheShips(playerTwo, "battleShipsTwo", "A1");
+            }
+
             // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
             console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
         }
@@ -574,6 +642,9 @@
 
                 if (playerOne.coordinates[ship].includes("A1")) {
                     console.log("SHIP HERE");
+                    // remove or pop off coordinate from ship object
+                } else {
+                    console.log("no ships here")
                 }
             }
         }
@@ -866,12 +937,16 @@
 
                         }
 
-                        console.log(shipCoordinates, "shipCoordinates");
+                        // console.log(shipCoordinates, "shipCoordinates");
 
                         break;
                 }
 
             });
+
+            // playerBoard.currentShips();
+            // console.log(playerBoard.currentShips, "Ship Health");
+            // return playerBoard.currentShips
         }
 
         // BattleShip cells change background colour on Mouse Hover

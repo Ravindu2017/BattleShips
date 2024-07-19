@@ -19,8 +19,10 @@ class Position {
 
 class Gameboard {
     constructor() {
+        this.name = "";
         this.board = {};
         this.ships = {};
+        this.gameSet = false;
         // this.shipsPlaced = true;
         this.shipsPlaced = false;
         this.boolShips = {};
@@ -32,6 +34,7 @@ class Gameboard {
             "Submarine":    [],
             "Patrol":       [],
         };
+        this.allOver = false;
     }
 
     setLocation(key, value) {
@@ -39,6 +42,7 @@ class Gameboard {
     }
 
     healthPoints(key, value) {
+        // maybe set ships value to 0
         return this.coordinates[key].length
     }
     
@@ -82,14 +86,29 @@ class Gameboard {
         this.shipsPlaced = Object.keys(this.ships).length <= 0;
     }
 
-    currentShips({shipName: value}) {
+    currentShips() {
         this.boolShips = {
-            "Carrier":      value,
-            "BattleShip":   value,
-            "Destroyer":    value,
-            "Submarine":    value,
-            "Patrol":       value,
+            "Carrier":      this.healthPoints("Carrier"),
+            "BattleShip":   this.healthPoints("BattleShip"),
+            "Destroyer":    this.healthPoints("Destroyer"),
+            "Submarine":    this.healthPoints("Submarine"),
+            "Patrol":       this.healthPoints("Patrol"),
         }
+        let sum = 0;
+        for (let n of Object.keys(this.boolShips)) {
+            sum += this.boolShips[n];
+        }
+        // return this.boolShips
+        return sum
+    }
+
+    gameOver() {
+        // this.currentShips();
+        this.allOver = this.currentShips() === 0;
+    }
+
+    updateState() {
+        this.gameSet = this.currentShips() === 17;
     }
 
     // haveShips() {
@@ -122,7 +141,7 @@ const what = new Position("A", 10);
 // createBoardGame(gameState);
 
 gameState.createBoardGame();
-console.log(gameState.shipsPlaced);
+// console.log(gameState.shipsPlaced);
 gameState.place();
 delete gameState.ships.BattleShip
 delete gameState.ships.Carrier
@@ -130,7 +149,7 @@ delete gameState.ships.Destroyer
 delete gameState.ships.Patrol
 delete gameState.ships.Submarine
 
-console.log(gameState.shipsPlaced);
+// console.log(gameState.shipsPlaced);
 // gameState.ships = {};
 gameState.updateShipsPlaced();
 // console.log(gameState.ships, Object.keys(gameState.ships).length <= 0, gameState.shipsPlaced, gameState.currentShips(), gameState.setLocation("Patrol", "A1", "A2", "A3"));
