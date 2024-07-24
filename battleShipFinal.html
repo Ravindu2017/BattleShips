@@ -20,13 +20,13 @@
         }
 
         #battleShips th, #battleShips td {
-            background-color: white;
+            /* background-color: white; */
             border: 2px solid;
             padding: 20px;
         }
 
         #battleShipsTwo th, #battleShipsTwo td {
-            background-color: white;
+            /* background-color: white; */
             border: 2px solid;
             padding: 20px;
         }
@@ -36,6 +36,21 @@
             width: 150px;
             font-size: x-large;
             float: right;
+        }
+
+        .white {
+            background-color: white;
+            background: white;
+        }
+
+        .pink {
+            background-color: pink;
+            /* background: blue; */
+        }
+
+        .blue {
+            background-color: blue;
+            /* background: blue; */
         }
 
         /* #battleShips td:hover {
@@ -66,7 +81,12 @@
     <button id="removeBtn" type="button">
         remove some Ship
     </button>
-    <table id="battleShips">
+
+    <button id="rematch" type="button">
+        Play Again?
+    </button>
+
+    <table id="battleShips" tabindex="0">
         <thead>
             <tr>
                 <th></th>
@@ -216,7 +236,7 @@
         </tbody>
     </table>
         <div><p></p></div>
-    <table id="battleShipsTwo">
+    <table id="battleShipsTwo" tabindex="0">
         <thead>
             <tr>
                 <th></th>
@@ -367,13 +387,34 @@
     </table>
 
     <script>
-        // let turn = false;
+        // Global Variables
         let turn = true;
         let shift = false;
         let playerTwoTurn = false;
+        let activeTable = "tableOne";
+
+        const coords = {
+            "Carrier":      [],
+            "Battleship":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        }
+
+        const shipCoordinates = {
+            "Carrier":      [],
+            "BattleShip":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        };
+        
+        let deleteShip = false;
 
         const playerOne = new Gameboard();
         const playerTwo = new Gameboard();
+
+        console.log(playerOne, playerTwo, "begininning");
 
         playerOne.htmlID = "battleShips";
         playerTwo.htmlID = "battleShipsTwo";
@@ -460,7 +501,6 @@
                 }
 
                 // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
-                //     // Code Here
                 //     console.log("SHIP HIT");
                 // } else {
                 //     console.log("MISS")
@@ -472,6 +512,8 @@
 
             if (currentBoard.allOver) {
                 window.alert(`${currentBoard.name} loses`);
+                // Play again button
+                // CODE HERE
             }
             // currentBoard.gameOver();
 
@@ -485,8 +527,8 @@
         document.getElementById("battleShips").addEventListener("click", myFunc);
         document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
 
-        document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray);
-        document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
+        // document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray);
+        // document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
 
         placeTheShips(playerOne, "battleShips", "A1");
         // placeTheShips(playerTwo, "battleShipsTwo", "A1");
@@ -506,23 +548,98 @@
         
 
         // Let's execute these functions only after the ships have been placed
-        document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
-        document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
+        // document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
+        // document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
         document.getElementById("rotateBtn").addEventListener("click", rotate);
         document.getElementById("removeBtn").addEventListener("click", removeShip);
+        document.getElementById("rematch").addEventListener("click", playAgain);
+
+        function playAgain(e) {
+            // reset global variables
+            turn = true;
+            shift = false;
+            playerTwoTurn = false;
+            deleteShip = false;
+            activeTable = "tableOne";
+
+            // turn every table cell white
+            const tableOne = document.getElementById(playerOne.htmlID);
+            const tableTwo = document.getElementById(playerTwo.htmlID);
+            const cellsOne = tableOne.getElementsByTagName("td");
+            const cellsTwo = tableTwo.getElementsByTagName("td");
+            
+            Array.from(cellsOne).forEach(cell => {
+                cell.classList.remove('pink', 'blue', 'white');
+            });
+
+            Array.from(cellsTwo).forEach(cell => {
+                cell.classList.remove('pink', 'blue', 'white');
+            });
+
+            clearCoordinates(coords);
+            clearCoordinates(shipCoordinates);
+
+            // console.log(coords, shipCoordinates);
+
+            // These objects retain their htmlID
+            playerOne.reset();
+            playerTwo.reset();
+
+            // Restore state
+
+            playerOne.htmlID = "battleShips";
+            playerTwo.htmlID = "battleShipsTwo";
+
+            // playerOne.createBoardGame();
+            // playerTwo.createBoardGame();
+
+            playerOne.place();
+            playerTwo.place();
+
+            console.log(playerOne, playerTwo);
+
+            document.getElementById(playerOne.htmlID).removeEventListener("keydown"); // CODE HERE
+            document.getElementById(playerTwo.htmlID).removeEventListener("keydown");
+
+            placeTheShips(playerOne, "battleShips", "A1");
+
+            // document.getElementById("battleShips").addEventListener("click", myFunc);
+            // document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
+        }
+
 
         function red(cell){
             cell.style.background = "pink";
 
         }
 
-        function turnRed(htmlBoard, val){
+        function turnRed(htmlBoard, val, idx){
             // playerBoard.board[val].ship = true;
             const table = document.getElementById(htmlBoard);
             const cells = table.getElementsByTagName("td");
             Array.from(cells).forEach(cell => {
                 if (cell.textContent === val) {
-                    cell.style.background = "pink"
+                    // cell.style.background = "pink";
+                    cell.classList.remove('white')
+                    cell.classList.add('pink');
+                    // console.log(cell, playerOne.ships, playerTwo.ships, idx);
+                }
+            });
+        }
+
+        function turnBlue(htmlBoard, val){
+            // playerBoard.board[val].ship = true;
+            const table = document.getElementById(htmlBoard);
+            const cells = table.getElementsByTagName("td");
+            const flat = new Set(val);
+            console.log(val);
+            Array.from(cells).forEach(cell => {
+                // if (cell.textContent === val) {
+                if (flat.has(cell.textContent)) {
+                    // cell.style.background = "blue";
+                    cell.classList.remove('white', 'pink');
+                    cell.classList.add('blue');
+                    // console.log("yes", cell);
                 }
             });
         }
@@ -553,26 +670,7 @@
             });
         }
 
-        const coords = {
-            "Carrier":      [],
-            "Battleship":   [],
-            "Destroyer":    [],
-            "Submarine":    [],
-            "Patrol":       [],
-        }
-
-        const shipCoordinates = {
-            "Carrier":      [],
-            "BattleShip":   [],
-            "Destroyer":    [],
-            "Submarine":    [],
-            "Patrol":       [],
-        };
-        
-        let deleteShip = false;
-
-
-        // function shipThere(xy, positions, key) {
+        // function shipTherOld(xy, positions, key) {
         //     let occupiedCoordinates = []
 
         //     for (pos of Object.keys(positions)) {
@@ -600,7 +698,7 @@
             });
         }
 
-        function shipThere(xy, positions, key, player) {
+        function shipThere(xy, positions, key, player, board) {
             let occupiedCoordinates = []
 
             for (pos of Object.keys(positions)) {
@@ -608,6 +706,7 @@
                 // console.log(positions[pos], "post", occupiedCoordinates);
             }
 
+            console.log("occu", occupiedCoordinates)
             // I'm comparing coordinate list, occupied coordinates
             // with coordinate set, xy
             const result = xy.some(element => occupiedCoordinates.includes(element));
@@ -618,21 +717,25 @@
             } else {
                 positions[key].push(...xy);
                 player.setLocation(key, xy);
+                turnBlue(board, xy)
                 deleteShip = true;
             }
 
             player.updateState();
-            console.log(playerOne.gameSet);
+            console.log(playerOne.gameSet, playerTwoTurn, "conditions threshold");
 
             // if playerOne is done and playerTwo isn't
             if (playerOne.gameSet === true && playerTwoTurn === false) {
                 playerTwoTurn = true;
+                // code here
                 clearCoordinates(shipCoordinates);
                 placeTheShips(playerTwo, "battleShipsTwo", "A1");
+                activeTable = "tableTwo";
             }
 
             // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
-            console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
+            // console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
+            console.log(playerOne.ships, playerTwo.ships);
         }
 
 
@@ -658,6 +761,12 @@
         // Ship placement function
         function placeTheShips(playerBoard, htmlBoard, idx) {
 
+            // if (playerOne.gameSet) return
+
+            if (activeTable !== "tableOne") return //
+            
+            if (playerOne.gameSet && playerTwoTurn === false) return
+
             const table = document.getElementById(htmlBoard);
             const cells = table.getElementsByTagName("td");
 
@@ -665,11 +774,19 @@
             // ELSE they share the same numbers shift => 1
 
             // console.log(cells.textContent);
+            document.getElementById(playerBoard.htmlID).focus();
+            document.getElementById(playerBoard.htmlID).addEventListener("keydown", (e) => {
 
-            document.addEventListener("keydown", (e) => {
+            // document.addEventListener("keydown", (e) => {
+                // console.log(activeTable);
+
+                // console.log(playerOne.gameSet, playerTwo.gameSet);
                 Array.from(cells).forEach(cell => {
-                    cell.style.background = "white"
+                    // cell.style.background = "white";
+                    cell.classList.remove('pink');
+                    cell.classList.add('white');
                 });
+
                 switch(event.keyCode) {
                     case 37:
                         // console.log('Left arrow key pressed', idx, String.fromCharCode(idx.charCodeAt(0) + playerBoard.ships[Object.keys(playerBoard.ships)[0]] - 1));
@@ -696,7 +813,7 @@
 
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             }
                         
@@ -720,7 +837,7 @@
 
                                     // letters = 'A' + 1 + 1 => 'A1', 'A2', 'A3'
                                     let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             } else {
 
@@ -728,7 +845,7 @@
 
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             }
 
@@ -746,7 +863,7 @@
                                 
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             }
 
@@ -754,13 +871,13 @@
                                 idx = String.fromCharCode(idx.charCodeAt(0) + 1) + idx[1] + (idx[2] ? idx[2] : "");
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             } else {
                                 console.log(idx);
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0) + j) + idx[1] + (idx[2] ? idx[2] : "");
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             }
 
@@ -780,7 +897,7 @@
 
                                     // letters = 'A' + 1 + 1 => 'A1', 'A2', 'A3'
                                     let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             } else {
 
@@ -788,7 +905,7 @@
                                 console.log(idx);
                                 for (let j = 0; j < playerBoard.ships[Object.keys(playerBoard.ships)[0]]; j++) {
                                     let letters = String.fromCharCode(idx.charCodeAt(0)) + (Number(idx[1]) + j);
-                                    turnRed(htmlBoard, letters);
+                                    turnRed(htmlBoard, letters, idx);
                                 }
                             }
 
@@ -898,7 +1015,7 @@
                         
                         break;
                     case 13:
-                        // console.log("Enter pressed");
+                        console.log("Enter pressed", idx);
 
 
                         shipCoordinates[Object.keys(playerBoard.ships)[0]] = [];
@@ -912,8 +1029,8 @@
                                 place.push(letters);
                             }
 
-                            // shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
-                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard);
+                            console.log("ship there call", place, shift);
+                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard, htmlBoard);
 
                             if (deleteShip) {
                                 delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
@@ -928,8 +1045,8 @@
                                 place.push(letters);
                             }
 
-                            // shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0]);
-                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard);
+                            console.log("ship there call", place, shift);
+                            shipThere(place, shipCoordinates, Object.keys(playerBoard.ships)[0], playerBoard, htmlBoard);
 
                             if (deleteShip) {
                                 delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
@@ -947,6 +1064,8 @@
             // playerBoard.currentShips();
             // console.log(playerBoard.currentShips, "Ship Health");
             // return playerBoard.currentShips
+
+            return 1
         }
 
         // BattleShip cells change background colour on Mouse Hover

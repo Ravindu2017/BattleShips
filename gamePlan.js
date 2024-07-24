@@ -37,6 +37,24 @@ class Gameboard {
         this.allOver = false;
     }
 
+    reset() {
+        this.name = "";
+        this.board = {};
+        this.ships = {};
+        this.gameSet = false;
+        this.shipsPlaced = false;
+        this.boolShips = {};
+        this.htmlID = "";
+        this.coordinates = {
+            "Carrier":      [],
+            "BattleShip":   [],
+            "Destroyer":    [],
+            "Submarine":    [],
+            "Patrol":       [],
+        };
+        this.allOver = false;
+    }
+
     setLocation(key, value) {
         this.coordinates[key].push(...value);
     }
