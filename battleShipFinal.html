@@ -61,6 +61,11 @@
             background-color: gray;
         }
 
+        .table-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
         /* #battleShips td:hover {
             background-color: gray;
             /* border: 2px solid;
@@ -101,7 +106,7 @@
             Once 5 ships are placed, it is time for Player Two to place their ships.
         </h2>
     </div>
-
+    <div class="table-container">
     <table id="battleShips" tabindex="0">
         <thead>
             <tr>
@@ -401,6 +406,7 @@
             </tr>
         </tbody>
     </table>
+    </div>
     <script>
         // Global Variables
         let turn = true;
@@ -480,7 +486,7 @@
             // const location = new Position();
             const depth = e.target.parentElement.id.split("-");
             // e.target.style.backgroundColor = "orange"; // CODE HERE
-            e.target.classList.add("orange");
+            e.target.classList.add("orange"); // CODE HERE
             console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
             let opponent = "";
@@ -501,13 +507,21 @@
             const enemyTable = document.getElementById(opponent.htmlID);
             const enemyCells = enemyTable.getElementsByTagName("td");
             
-            Array.from(cells).forEach(cell => {
+            setTimeout(() => {
+                console.log("Opponent Attacking");
+                Array.from(cells).forEach(cell => {
+                cell.classList.remove('gray');
+            });
+            }, 2000)
+            // Array.from(cells).forEach(cell => {
+            //     cell.classList.remove('gray');
+            // });
+
+            Array.from(enemyCells).forEach(cell => {
                 cell.classList.add('gray');
             });
 
-            Array.from(enemyCells).forEach(cell => {
-                cell.classList.remove('gray');
-            });
+            // e.target.classList.add("orange");
             // currentBoard.gameOver();
             // console.log(currentBoard.board, currentBoard.allOver, "game done?");
 
@@ -802,9 +816,13 @@
             // console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
             console.log(playerOne.ships, playerTwo.ships, playerOne.gameSet, playerTwo.gameSet);
 
-            if (playerOne.gameSet && playerTwo.gameSet) {
-                hide(playerOne.htmlID);
-                hide(playerTwo.htmlID);
+            // if (playerOne.gameSet && playerTwo.gameSet) {
+            //     hide(playerOne.htmlID);
+            //     hide(playerTwo.htmlID);
+            // }
+
+            if (player.gameSet) {
+                hide(player.htmlID);
             }
         }
 
