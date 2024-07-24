@@ -57,6 +57,10 @@
             background-color: orange;
         }
 
+        .gray {
+            background-color: gray;
+        }
+
         /* #battleShips td:hover {
             background-color: gray;
             /* border: 2px solid;
@@ -78,17 +82,25 @@
     <script src="gamePlan.js"></script>
 </head>
 <body>
+
+
     <button id="rotateBtn" type="button">
         rotate
     </button>
 
-    <button id="removeBtn" type="button">
-        remove some Ship
-    </button>
 
-    <button id="rematch" type="button">
+
+    <button id="rematch" type="button" style="font-size: large;">
         Play Again?
     </button>
+
+    <div>
+        <h2 style="width: 500px;">
+            To play the game, use arrow keys to place ships on your respective board. 
+            Player One starts. To Rotate the ship placement, click the rotate button. 
+            Once 5 ships are placed, it is time for Player Two to place their ships.
+        </h2>
+    </div>
 
     <table id="battleShips" tabindex="0">
         <thead>
@@ -389,7 +401,6 @@
             </tr>
         </tbody>
     </table>
-
     <script>
         // Global Variables
         let turn = true;
@@ -429,6 +440,15 @@
         playerOne.place();
         playerTwo.place();
 
+        function hide(ID){
+            const table = document.getElementById(ID);
+            const cells = table.getElementsByTagName("td");
+            
+            Array.from(cells).forEach(cell => {
+                cell.classList.add('gray');
+            });
+        }
+
         function myFunc(e){
             // change this function to only work
             // after all ships have been placed
@@ -463,15 +483,31 @@
             e.target.classList.add("orange");
             console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
+            let opponent = "";
 
             if (depth[0] === "header") {
                 currentBoard = playerOne;
                 currentBoard.name = "Player One";
+                opponent = playerTwo;
             } else if (depth[0] === "footer") {
                 currentBoard = playerTwo;
                 currentBoard.name = "Player Two";
+                opponent = playerOne;
             }
 
+            const tableTop = document.getElementById(currentBoard.htmlID);
+            const cells = tableTop.getElementsByTagName("td");
+
+            const enemyTable = document.getElementById(opponent.htmlID);
+            const enemyCells = enemyTable.getElementsByTagName("td");
+            
+            Array.from(cells).forEach(cell => {
+                cell.classList.add('gray');
+            });
+
+            Array.from(enemyCells).forEach(cell => {
+                cell.classList.remove('gray');
+            });
             // currentBoard.gameOver();
             // console.log(currentBoard.board, currentBoard.allOver, "game done?");
 
@@ -764,7 +800,12 @@
 
             // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
             // console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
-            console.log(playerOne.ships, playerTwo.ships);
+            console.log(playerOne.ships, playerTwo.ships, playerOne.gameSet, playerTwo.gameSet);
+
+            if (playerOne.gameSet && playerTwo.gameSet) {
+                hide(playerOne.htmlID);
+                hide(playerTwo.htmlID);
+            }
         }
 
 
