@@ -53,6 +53,10 @@
             /* background: blue; */
         }
 
+        .orange {
+            background-color: orange;
+        }
+
         /* #battleShips td:hover {
             background-color: gray;
             /* border: 2px solid;
@@ -455,7 +459,8 @@
 
             // const location = new Position();
             const depth = e.target.parentElement.id.split("-");
-            e.target.style.backgroundColor = "orange";
+            // e.target.style.backgroundColor = "orange"; // CODE HERE
+            e.target.classList.add("orange");
             console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
 
@@ -558,7 +563,7 @@
             // reset global variables
             turn = true;
             shift = false;
-            playerTwoTurn = false;
+            // playerTwoTurn = false;
             deleteShip = false;
             activeTable = "tableOne";
 
@@ -569,11 +574,11 @@
             const cellsTwo = tableTwo.getElementsByTagName("td");
             
             Array.from(cellsOne).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white');
+                cell.classList.remove('pink', 'blue', 'white', 'orange');
             });
 
             Array.from(cellsTwo).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white');
+                cell.classList.remove('pink', 'blue', 'white', 'orange');
             });
 
             clearCoordinates(coords);
@@ -590,8 +595,8 @@
             playerOne.htmlID = "battleShips";
             playerTwo.htmlID = "battleShipsTwo";
 
-            // playerOne.createBoardGame();
-            // playerTwo.createBoardGame();
+            playerOne.createBoardGame();
+            playerTwo.createBoardGame();
 
             playerOne.place();
             playerTwo.place();
@@ -706,9 +711,22 @@
                 // console.log(positions[pos], "post", occupiedCoordinates);
             }
 
-            console.log("occu", occupiedCoordinates)
+            console.log("occu", occupiedCoordinates, playerTwo.currentShips());
+            if (playerTwo.currentShips() === 0 && playerOne.gameSet) {
+                occupiedCoordinates = [];
+                clearCoordinates(shipCoordinates);
+            }
+            console.log("occu", occupiedCoordinates, playerTwo.currentShips(), playerOne.gameSet);
             // I'm comparing coordinate list, occupied coordinates
             // with coordinate set, xy
+            // if (playerOne.gameSet === true && playerTwoTurn === false) {
+            //     playerTwoTurn = true;
+            //     occupiedCoordinates = [];
+            //     // code here
+            //     clearCoordinates(shipCoordinates);
+            //     placeTheShips(playerTwo, "battleShipsTwo", "A1");
+            //     activeTable = "tableTwo";
+            // }
             const result = xy.some(element => occupiedCoordinates.includes(element));
 
             if (result) {
@@ -727,11 +745,22 @@
             // if playerOne is done and playerTwo isn't
             if (playerOne.gameSet === true && playerTwoTurn === false) {
                 playerTwoTurn = true;
+                occupiedCoordinates = [];
                 // code here
                 clearCoordinates(shipCoordinates);
                 placeTheShips(playerTwo, "battleShipsTwo", "A1");
                 activeTable = "tableTwo";
             }
+
+            // if (result) {
+            //     console.log("Cannot place ship here");
+            //     deleteShip = false;
+            // } else {
+            //     positions[key].push(...xy);
+            //     player.setLocation(key, xy);
+            //     turnBlue(board, xy)
+            //     deleteShip = true;
+            // }
 
             // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
             // console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
