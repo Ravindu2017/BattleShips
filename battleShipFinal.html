@@ -38,6 +38,20 @@
             float: right;
         }
 
+        #rematch {
+            height: 100px;
+            width: 150px;
+            font-size: x-large;
+            float: left;
+        }
+
+        .instructions {
+            font-size: x-large;
+            text-align: center;
+            margin: 0 auto;
+            width: 50%;
+        }
+
         .white {
             background-color: white;
             background: white;
@@ -89,7 +103,7 @@
 <body>
 
 
-    <button id="rotateBtn" type="button">
+    <!-- <button id="rotateBtn" type="button">
         rotate
     </button>
 
@@ -97,15 +111,15 @@
 
     <button id="rematch" type="button" style="font-size: large;">
         Play Again?
-    </button>
+    </button> -->
 
-    <div>
+    <!-- <div>
         <h2 style="width: 500px;">
             To play the game, use arrow keys to place ships on your respective board. 
             Player One starts. To Rotate the ship placement, click the rotate button. 
             Once 5 ships are placed, it is time for Player Two to place their ships.
         </h2>
-    </div>
+    </div> -->
     <div class="table-container">
     <table id="battleShips" tabindex="0">
         <thead>
@@ -407,6 +421,30 @@
         </tbody>
     </table>
     </div>
+    <div>
+        <h2 class="instructions">
+            To play the game, use arrow keys to place ships on your respective board.
+            Click on the table headings to focus on the board in order to place your ships.
+            Clicking other buttons such as 'Play Again' or 'rotate' causes the boards to lose focus.
+            Simply click the tables again to regain focus in order to place ships.
+    
+            Player One starts. To Rotate the ship placement, click the rotate button. 
+            Once 5 ships are placed, it is time for Player Two to place their ships.
+
+            Press 'ENTER' to place ship.
+        </h2>
+    </div>
+
+    <div>
+        <button id="rotateBtn" type="button" style="font-size: large;">
+            rotate
+        </button>
+
+
+        <button id="rematch" type="button" style="font-size: large;">
+            Play Again?
+        </button>
+    </div>
     <script>
         // Global Variables
         let turn = true;
@@ -557,6 +595,7 @@
                 if (index > -1) { // only splice array when item is found
                     currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
                     console.log("ship removed", currentBoard.coordinates[ship], ship);
+                    window.alert("hit");
                 }
 
                 // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
