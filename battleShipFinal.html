@@ -461,6 +461,10 @@
             // playerOne.gameOver();
             // playerTwo.gameOver();
 
+            if (!playerTwo.gameSet) {
+                return
+            }
+
             if (playerOne.allOver) {
                 return
             }
@@ -565,7 +569,7 @@
             currentBoard.gameOver();
             console.log(currentBoard.board, currentBoard.allOver, "game done?");
 
-            if (currentBoard.allOver) {
+            if (currentBoard.allOver && currentBoard.gameSet) {
                 window.alert(`${currentBoard.name} loses`);
                 // Play again button
                 // CODE HERE
@@ -606,11 +610,13 @@
         // document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
         // document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
         document.getElementById("rotateBtn").addEventListener("click", rotate);
-        document.getElementById("removeBtn").addEventListener("click", removeShip);
+        // document.getElementById("removeBtn").addEventListener("click", removeShip);
         document.getElementById("rematch").addEventListener("click", playAgain);
 
         function playAgain(e) {
             // reset global variables
+            // again = true;
+            console.log("play again?")
             turn = true;
             shift = false;
             // playerTwoTurn = false;
@@ -624,11 +630,11 @@
             const cellsTwo = tableTwo.getElementsByTagName("td");
             
             Array.from(cellsOne).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white', 'orange');
+                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray');
             });
 
             Array.from(cellsTwo).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white', 'orange');
+                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray');
             });
 
             clearCoordinates(coords);
@@ -654,7 +660,7 @@
             console.log(playerOne, playerTwo);
 
             document.getElementById(playerOne.htmlID).removeEventListener("keydown"); // CODE HERE
-            document.getElementById(playerTwo.htmlID).removeEventListener("keydown");
+            // document.getElementById(playerTwo.htmlID).removeEventListener("keydown");
 
             placeTheShips(playerOne, "battleShips", "A1");
 
