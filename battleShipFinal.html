@@ -6,27 +6,23 @@
     <title>Battle Ships</title>
     <style>
         #battleShips {
-            /* background-color: black; */
             border: 2px solid;
             width: 500px;
             height: 400px;
         }
 
         #battleShipsTwo {
-            /* background-color: black; */
             border: 2px solid;
             width: 500px;
             height: 400px;
         }
 
         #battleShips th, #battleShips td {
-            /* background-color: white; */
             border: 2px solid;
             padding: 20px;
         }
 
         #battleShipsTwo th, #battleShipsTwo td {
-            /* background-color: white; */
             border: 2px solid;
             padding: 20px;
         }
@@ -59,12 +55,10 @@
 
         .pink {
             background-color: pink;
-            /* background: blue; */
         }
 
         .blue {
             background-color: blue;
-            /* background: blue; */
         }
 
         .orange {
@@ -80,46 +74,27 @@
             justify-content: space-around;
         }
 
-        /* #battleShips td:hover {
-            background-color: gray;
-            /* border: 2px solid;
-            padding: 20px; *
-        } */
+        .title {
+            font-size: 20px;
+        }
 
-        /* #battleShips td:hover {
-            background-color: gray;
-        } */
-/* 
-        #battleShipsTwo td:hover {
-            background-color: gray;
-            /*border: 2px solid;
-             padding: 20px; /
-        } */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
 
+        }
 
     </style>
     <script src="gamePlan.js"></script>
 </head>
 <body>
 
+    <div class="container">
+        <p class="title">Player One</p>
+        <p class="title">Player Two</p>
+    </div>
 
-    <!-- <button id="rotateBtn" type="button">
-        rotate
-    </button>
-
-
-
-    <button id="rematch" type="button" style="font-size: large;">
-        Play Again?
-    </button> -->
-
-    <!-- <div>
-        <h2 style="width: 500px;">
-            To play the game, use arrow keys to place ships on your respective board. 
-            Player One starts. To Rotate the ship placement, click the rotate button. 
-            Once 5 ships are placed, it is time for Player Two to place their ships.
-        </h2>
-    </div> -->
     <div class="table-container">
     <table id="battleShips" tabindex="0">
         <thead>
@@ -444,6 +419,9 @@
         <button id="rematch" type="button" style="font-size: large;">
             Play Again?
         </button>
+    </div>
+    <div class="container">
+        <p id="hitOrmiss" class="title">test</p>
     </div>
     <script>
         // Global Variables
