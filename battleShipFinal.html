@@ -82,7 +82,10 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
+        }
 
+        .score {
+            font-size: 50px;
         }
 
     </style>
@@ -421,7 +424,7 @@
         </button>
     </div>
     <div class="container">
-        <p id="hitOrmiss" class="title">test</p>
+        <p id="hitOrmiss" class="score"></p>
     </div>
     <script>
         // Global Variables
@@ -429,6 +432,7 @@
         let shift = false;
         let playerTwoTurn = false;
         let activeTable = "tableOne";
+        const shipStatus = document.getElementById("hitOrmiss");
 
         const coords = {
             "Carrier":      [],
@@ -564,7 +568,8 @@
 
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
-
+            // let shipStatus = document.getElementById("hitOrmiss");
+            let shipHit = false;
             
         
             for (ship of Object.keys(currentBoard.coordinates)) {
@@ -573,7 +578,8 @@
                 if (index > -1) { // only splice array when item is found
                     currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
                     console.log("ship removed", currentBoard.coordinates[ship], ship);
-                    window.alert("hit");
+                    // window.alert("hit"); // CODE HERE
+                    shipHit = true;
                 }
 
                 // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
@@ -581,6 +587,14 @@
                 // } else {
                 //     console.log("MISS")
                 // }
+            }
+
+            if (shipHit) {
+                shipStatus.innerText = "HIT!";
+                shipStatus.style.color = "Green";
+            } else {
+                shipStatus.innerText = "MISS!";
+                shipStatus.style.color = "Red";
             }
 
             currentBoard.gameOver();
