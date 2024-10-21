@@ -11,7 +11,7 @@
             height: 400px; */
             width: 35vw;
             height: 35vh;
-            z-index: 1;
+            /* z-index: 1; */
         }
 
         #battleShipsTwo {
@@ -20,7 +20,7 @@
             height: 400px; */
             width: 35vw;
             height: 35vh;
-            z-index: 1;
+            /* z-index: 1; */
         }
 
         #battleShips th, #battleShips td {
@@ -113,11 +113,39 @@
             background-color: rgba(0, 0, 0, 1);
             z-index: 10;
         }
+        
+        .modal {
+            display: none;
+            z-index: 1;
+        }
 
-        .attack {
-            border: 10px solid salmon;
-            z-index: 2;
+        .modal-content {
+            position: absolute;
+            top: 30%;
+            left: 40%;
+            /* transform: translate(-50%, -50%); */
+            background-color: white;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 20vw;
+            height: 20vh;
+        }
+        
+        .modal-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #0400ff;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .modal-buttons button:hover {
+            background-color: #2ab300;
         }
 
     </style>
@@ -131,8 +159,17 @@
     </div>
 
     <div class="table-container">
-    
-    <div class="attack"><button></button></div>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <p>Confirm attack</p>
+            <div class="modal-buttons">
+                <button id="yesButton">Attack!</button>
+                <button id="noButton">On second thought...</button>
+            </div>
+        </div>
+    </div>
+
     <table id="battleShips" tabindex="0">
         <thead>
             <tr>
@@ -287,8 +324,7 @@
     <!-- hiding div -->
 
     <div><p></p></div>
-    
-    <div class="attack"></div>
+
     <table id="battleShipsTwo" tabindex="0">
         <thead>
             <tr>
@@ -481,6 +517,7 @@
     </div>
     <script>
         // Global Variables
+        // if turn is true then it is player One's turn
         let turn = true;
         let shift = false;
         let playerTwoTurn = false;
@@ -538,18 +575,49 @@
             });
         }
 
-        function attack(attacker, defender) {
-            view = document.getElementById("hideMe");
-            opponentView = document.getElementById("hideMeToo");
+        
+        // modal function
+        function showModal() {
+            return new Promise((resolve) => {
+            const modal = document.getElementById('confirmationModal');
+            modal.style.display = 'block'; // Show the modal
+
+            // Get buttons
+            const yesButton = document.getElementById('yesButton');
+            const noButton = document.getElementById('noButton');
+
+            // Handle Yes click
+            yesButton.onclick = function() {
+                modal.style.display = 'none'; // Hide the modal
+                resolve(true); // Resolve the promise with true
+            };
+
+            // Handle No click
+            noButton.onclick = function() {
+                modal.style.display = 'none'; // Hide the modal
+                resolve(false); // Resolve the promise with false
+            };
+            });
         }
 
-        function myFunc(e){
+        async function attackConfirm() {
+            const userConfirmed = await showModal();
+            let conf = true;
+            
+            if (userConfirmed) {
+            } else {
+                conf = false;
+            }
+
+            return conf
+        }
+
+        // game function
+        async function myFunc(e){
             // change this function to only work
             // after all ships have been placed
             // playerOne.gameOver();
             // playerTwo.gameOver();
-            let view = "";
-            let opponentView = "";
 
             if (!playerTwo.gameSet) {
                 return
@@ -568,6 +636,11 @@
                 return
             }
 
+            // decide whose turn it is to play
+            // turn value is switched and clicked element is checked to make sure
+            // opponent board is clicked on
+            // such that it is player ONE's turn and they are clicking on player TWO's board
+            // after check switch turn value so it is the next player's turn
             if (!turn && e.target.parentElement.id.split("-")[0] === "header") { 
                 turn = true;
             } else if (turn && e.target.parentElement.id.split("-")[0] === "footer") {
@@ -579,8 +652,9 @@
 
             // const location = new Position();
             const depth = e.target.parentElement.id.split("-");
-            // e.target.style.backgroundColor = "orange"; // CODE HERE
-            e.target.classList.add("orange"); // CODE HERE
+            // if e.target.classList has orange just pop up that the spot has
+            // already been hit
+            // e.target.classList.add("orange"); // CODE HERE
             console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
             let opponent = "";
@@ -589,14 +663,10 @@
                 currentBoard = playerOne;
                 currentBoard.name = "Player One";
                 opponent = playerTwo;
-                view = document.getElementById("hideMe");
-                opponentView = document.getElementById("hideMeToo");
             } else if (depth[0] === "footer") {
                 currentBoard = playerTwo;
                 currentBoard.name = "Player Two";
                 opponent = playerOne;
-                view = document.getElementById("hideMeToo");
-                opponentView = document.getElementById("hideMe");
             }
 
             const tableTop = document.getElementById(currentBoard.htmlID);
@@ -608,12 +678,25 @@
             // Improve hiding with a proceed function
             tableTop.style.backgroundColor = "rgba(0, 0, 0, 0)";
 
-            Array.from(cells).forEach(cell => {
-                    // add overlay
-                cell.classList.remove('gray');
-            });
-
-            attack(tableTop, enemyTable);
+            // this should be called once current player is ready to attack
+            // const conf = confirm("Do you wish to attack?");
+            const conf = await attackConfirm();
+            console.log("CONF", conf);
+            if (conf) {
+                setTimeout(() => {
+                    console.log("Opponent Attacking");
+                    Array.from(cells).forEach(cell => {
+                    // remove overlay
+                    cell.classList.remove('gray');
+                    e.target.classList.add("orange");
+                });
+                }, 2000);
+            } else {
+                // player did not attack therefore they still have their turn
+                turn = !turn;
+                return
+            }
+            
             /*
             setTimeout(() => {
                 console.log("Opponent Attacking");
