@@ -616,8 +616,6 @@
         async function myFunc(e){
             // change this function to only work
             // after all ships have been placed
-            // playerOne.gameOver();
-            // playerTwo.gameOver();
 
             if (!playerTwo.gameSet) {
                 return
@@ -790,37 +788,9 @@
         document.getElementById("battleShips").addEventListener("click", myFunc);
         document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
 
-        // document.getElementById("battleShipsTwo").addEventListener("mouseover", mouseGray);
-        // document.getElementById("battleShipsTwo").addEventListener("mouseout", mouseWhite);
 
         placeTheShips(playerOne, "battleShips", "A1");
-        // placeTheShips(playerTwo, "battleShipsTwo", "A1");
 
-        // for (let k = 0; k < 17; k++) {
-        //     playerOne.updateState();
-        // }
-
-
-
-        // while (playerOne.gameSet === false) {
-        //     placeTheShips(playerOne, "battleShips", "A1");
-        //     playerOne.begin();
-        // }
-
-        // placeTheShips(playerTwo, "battleShips", "A1");
-        
-
-        // Let's execute these functions only after the ships have been placed
-        // document.getElementById("battleShips").addEventListener("mouseover", mouseGray);
-        // document.getElementById("battleShips").addEventListener("mouseout", mouseWhite);
-        
-        // Where rotate happens
-        // switch it with key press down
-        // document.getElementById("rotateBtn").addEventListener("click", rotate);
-        // document.addEventListener("keydown", function(e) => {
-
-        // })
-        // document.getElementById("removeBtn").addEventListener("click", removeShip);
         document.getElementById("rematch").addEventListener("click", playAgain);
 
         function playAgain(e) {
@@ -857,7 +827,6 @@
             playerTwo.reset();
 
             // Restore state
-
             playerOne.htmlID = "battleShips";
             playerTwo.htmlID = "battleShipsTwo";
 
@@ -869,13 +838,10 @@
 
             console.log(playerOne, playerTwo);
 
-            document.getElementById(playerOne.htmlID).removeEventListener("keydown"); // CODE HERE
-            // document.getElementById(playerTwo.htmlID).removeEventListener("keydown");
+            document.getElementById(playerOne.htmlID).removeEventListener("keydown");
 
             placeTheShips(playerOne, "battleShips", "A1");
 
-            // document.getElementById("battleShips").addEventListener("click", myFunc);
-            // document.getElementById("battleShipsTwo").addEventListener("click", myFunc);
         }
 
 
@@ -885,12 +851,10 @@
         }
 
         function turnRed(htmlBoard, val, idx){
-            // playerBoard.board[val].ship = true;
             const table = document.getElementById(htmlBoard);
             const cells = table.getElementsByTagName("td");
             Array.from(cells).forEach(cell => {
                 if (cell.textContent === val) {
-                    // cell.style.background = "pink";
                     cell.classList.remove('white')
                     cell.classList.add('pink');
                     // console.log(cell, playerOne.ships, playerTwo.ships, idx);
@@ -899,69 +863,17 @@
         }
 
         function turnBlue(htmlBoard, val){
-            // playerBoard.board[val].ship = true;
             const table = document.getElementById(htmlBoard);
             const cells = table.getElementsByTagName("td");
             const flat = new Set(val);
-            console.log(val);
+            // console.log(val);
             Array.from(cells).forEach(cell => {
-                // if (cell.textContent === val) {
                 if (flat.has(cell.textContent)) {
-                    // cell.style.background = "blue";
                     cell.classList.remove('white', 'pink');
                     cell.classList.add('blue');
-                    // console.log("yes", cell);
                 }
             });
         }
-
-        // function turnRed(htmlBoard, val){
-        //     playerBoard.board[val].ship = true;
-        //     const table = document.getElementById(htmlBoard);
-        //     const cells = table.getElementsByTagName("td");
-        //     Array.from(cells).forEach(cell => {
-        //         if (cell.textContent === val) {
-        //             cell.style.background = "pink"
-        //         }
-        //     });
-        // }
-
-        function highLight(htmlBoard, val){
-            // playerBoard.board[val].ship = true;
-            const table = document.getElementById(htmlBoard);
-            const cells = table.getElementsByTagName("td");
-            // console.log(val.s)
-            Array.from(cells).forEach(cell => {
-                if (cell.textContent === val) {
-                    cell.style.background = "pink";
-                } 
-                // else {
-                //     cell.style.background = "white";
-                // }
-            });
-        }
-
-        // function shipTherOld(xy, positions, key) {
-        //     let occupiedCoordinates = []
-
-        //     for (pos of Object.keys(positions)) {
-        //         occupiedCoordinates.push(...positions[pos]);
-        //         console.log(positions[pos], "post", occupiedCoordinates);
-        //     }
-
-        //     // I'm comparing coordinate list, occupied coordinates
-        //     // with coordinate set, xy
-        //     const result = xy.some(element => occupiedCoordinates.includes(element));
-
-        //     if (result) {
-        //         console.log("Cannot place ship here");
-        //         deleteShip = false;
-        //     } else {
-        //         positions[key].push(...xy);
-        //         deleteShip = true;
-        //     }
-
-        // }
 
         function clearCoordinates(obj) {
             Object.keys(obj).forEach(key => {
@@ -977,26 +889,19 @@
                 // console.log(positions[pos], "post", occupiedCoordinates);
             }
 
-            console.log("occu", occupiedCoordinates, playerTwo.currentShips());
+            // console.log("occu", occupiedCoordinates, playerTwo.currentShips());
+            
             if (playerTwo.currentShips() === 0 && playerOne.gameSet) {
                 occupiedCoordinates = [];
                 clearCoordinates(shipCoordinates);
             }
-            console.log("occu", occupiedCoordinates, playerTwo.currentShips(), playerOne.gameSet);
-            // I'm comparing coordinate list, occupied coordinates
-            // with coordinate set, xy
-            // if (playerOne.gameSet === true && playerTwoTurn === false) {
-            //     playerTwoTurn = true;
-            //     occupiedCoordinates = [];
-            //     // code here
-            //     clearCoordinates(shipCoordinates);
-            //     placeTheShips(playerTwo, "battleShipsTwo", "A1");
-            //     activeTable = "tableTwo";
-            // }
+            
+            // console.log("occu", occupiedCoordinates, playerTwo.currentShips(), playerOne.gameSet);
+
             const result = xy.some(element => occupiedCoordinates.includes(element));
 
             if (result) {
-                console.log("Cannot place ship here");
+                // console.log("Cannot place ship here");
                 deleteShip = false;
             } else {
                 positions[key].push(...xy);
@@ -1006,36 +911,19 @@
             }
 
             player.updateState();
-            console.log(playerOne.gameSet, playerTwoTurn, "conditions threshold");
+
+            // console.log(playerOne.gameSet, playerTwoTurn, "conditions threshold");
 
             // if playerOne is done and playerTwo isn't
             if (playerOne.gameSet === true && playerTwoTurn === false) {
                 playerTwoTurn = true;
                 occupiedCoordinates = [];
-                // code here
                 clearCoordinates(shipCoordinates);
                 placeTheShips(playerTwo, "battleShipsTwo", "A1");
                 activeTable = "tableTwo";
             }
 
-            // if (result) {
-            //     console.log("Cannot place ship here");
-            //     deleteShip = false;
-            // } else {
-            //     positions[key].push(...xy);
-            //     player.setLocation(key, xy);
-            //     turnBlue(board, xy)
-            //     deleteShip = true;
-            // }
-
-            // playerOne.ships["Carrier"] = Number(playerOne.ships["Carrier"]) - 1;
-            // console.log(playerOne.coordinates, playerOne.ships, playerOne.healthPoints("Carrier"));
-            console.log(playerOne.ships, playerTwo.ships, playerOne.gameSet, playerTwo.gameSet);
-
-            // if (playerOne.gameSet && playerTwo.gameSet) {
-            //     hide(playerOne.htmlID);
-            //     hide(playerTwo.htmlID);
-            // }
+            // console.log(playerOne.ships, playerTwo.ships, playerOne.gameSet, playerTwo.gameSet);
 
             if (player.gameSet) {
                 hide(player.htmlID);
@@ -1057,19 +945,14 @@
         }
 
         function rotate() {
-            // return rotate = true;
             shift = !shift;
-            console.log("rotate clicked", shift);
+            // console.log("rotate clicked", shift);
         }
             
         // Ship placement function
         function placeTheShips(playerBoard, htmlBoard, idx) {
 
-
-
-            // if (playerOne.gameSet) return
-
-            if (activeTable !== "tableOne") return //
+            if (activeTable !== "tableOne") return
             
             if (playerOne.gameSet && playerTwoTurn === false) return
 
@@ -1079,20 +962,14 @@
             // IF they share the same letters shift => 1
             // ELSE they share the same numbers shift => 1
 
-            // console.log(cells.textContent);
             document.getElementById(playerBoard.htmlID).focus();
             document.getElementById(playerBoard.htmlID).addEventListener("keydown", (e) => {
 
-            if (e.key === "r" || e.key === "R") {
-                shift = !shift;
-            }
+                if (e.key === "r" || e.key === "R") {
+                    shift = !shift;
+                }
 
-            // document.addEventListener("keydown", (e) => {
-                // console.log(activeTable);
-
-                // console.log(playerOne.gameSet, playerTwo.gameSet);
                 Array.from(cells).forEach(cell => {
-                    // cell.style.background = "white";
                     cell.classList.remove('pink');
                     cell.classList.add('white');
                 });
@@ -1378,96 +1255,6 @@
             return 1
         }
 
-        // BattleShip cells change background colour on Mouse Hover
-        // Only IF ships are already placed
-        function mouseGray(e) {
-            // console.log(e, "mouseGray called");
-            let arena = "";
-            let parentNode = "";
-
-            if (e.toElement.nodeName === "TD") {
-                if (e.target.parentElement.id.split("-")[0] === "header") {
-                    arena = playerOne;
-                    parentNode = document.getElementById("battleShips");
-                } else if (e.target.parentElement.id.split("-")[0] === "footer") {
-                    arena = playerTwo;
-                    parentNode = document.getElementById("battleShipsTwo");
-                }
-
-                // console.log(arena.shipsPlaced, "DONE")
-                
-                // If ships are done being put in the board then continue to
-                // turn the boards gray
-                if (arena.shipsPlaced) {
-                    if (arena.board[e.target.innerText].hit !== true) {
-                        e.target.style.backgroundColor = "gray";
-                    } else {
-                        e.target.style.backgroundColor = "black";
-                    }
-                    console.log("Ships are placed");
-                    return
-                }
-            }
-        }
-
-
-        // BattleShip cells change back to white when mouse is not hovering them
-        function mouseWhite(e) {
-            // console.log(e, "mouseWhite called");
-            let arena = "";
-            if (e.fromElement.nodeName === "TD") {
-                // console.log(playerOne.board[e.target.innerText], e.target.innerText);
-                // console.log(e.target.parentElement.id.split("-")[0]);
-                if (e.target.parentElement.id.split("-")[0] === "header") {
-                    arena = playerOne;
-                } else if (e.target.parentElement.id.split("-")[0] === "footer") {
-                    arena = playerTwo;
-                }
-                if (arena.board[e.target.innerText].hit !== true) {
-                    // console.log("Mouse White", playerTwo.board[e.target.innerText].hit, e.target.innerText, playerTwo.board[e.target.innerText]);
-                    e.target.style.backgroundColor = "white";
-                }
-            }
-        }
-
-
-
-        function rotateShips(playerBoard, htmlBoard, loc, e) {
-            // console.log(playerBoard.board, htmlBoard.childNodes[3].childNodes[1].childNodes);            
-            let why = false;
-            let stop = 20;
-            // while (playerBoard.shipsPlaced === false && why > 0) {
-            // While player is hovering over the game board
-            while (playerBoard.shipsPlaced === false && why === false && stop > 0) {
-                playerBoard.updateShipsPlaced();
-                // console.log(playerBoard.shipsPlaced, "inner");
-
-                // Iterate through gameboard's ships
-                for (const ship of Object.entries(playerBoard.ships)) {
-                    // console.log(ship[0], ship[1], "inner loops");
-                    // place the ships
-                    let shipLength = ship[1];
-
-                    // Iterate through each ship's length
-                    for (let j = 0; j < shipLength; j++) {
-                        //playerBoardHorizontal
-                        let idx = Number(loc[1]) + j;
-                        if (idx <= 10 && !playerBoard.board[loc[0]+(idx)].ship) {
-                            playerBoard.board[loc[0]+(idx)].ship = true;
-                            // console.log(ship[0], "jcole", playerBoard.board[loc[0]+(idx)], loc[0]+(idx), htmlBoard);
-                        }
-                    }
-                }
-
-                stop--;
-            }
-
-            delete playerBoard.ships[Object.keys(playerBoard.ships)[0]];
-            playerBoard.updateShipsPlaced();
-            console.log("SHIP? ", Object.keys(playerBoard.ships)[0], playerOne.ships, Object.getOwnPropertyDescriptor(playerOne.ships, "Patrol"), Object.getOwnPropertyDescriptor(playerBoard.ships, "Patrol"));
-
-            return playerBoard.shipsPlaced
-        }
     </script>
 </body>
 </html>
