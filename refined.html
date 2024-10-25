@@ -68,11 +68,15 @@
         }
 
         .blue {
-            background-color: blue;
+            background-color: lightblue;
         }
 
         .orange {
             background-color: orange;
+        }
+
+        .lightgray {
+            background-color: lightgray;
         }
 
         .gray {
@@ -641,6 +645,29 @@
             });
         }
 
+        function shipWreck(e, shipLocation, shipName) {
+            let shipHit = false;
+            for (ship of Object.keys(shipLocation)) {
+                const index = shipLocation[ship].indexOf(e.target.innerText);
+                if (index > -1) { // only splice array when item is found
+                    shipLocation[ship].splice(index, 1); // 2nd parameter means remove one item only
+                    if (shipName === "Player One" && shipLocation[ship].length === 0) {
+                        const li = document.createElement('li');
+                        li.textContent = ship;
+                        playerOneStatus.appendChild(li);
+                        playerOneShips[ship] = 1;
+                    } else if (shipName === "Player Two" && shipLocation[ship].length === 0) {
+                        const li = document.createElement('li');
+                        li.textContent = ship;
+                        playerTwoStatus.appendChild(li);
+                        playerTwoShips[ship] = 1;
+                    }
+                    shipHit = true;
+                }
+            }
+            return shipHit
+        }
+
         async function attackConfirm() {
             const userConfirmed = await showModal();
             let conf = true;
@@ -657,6 +684,11 @@
         async function myFunc(e){
             // change this function to only work
             // after all ships have been placed
+            if (e.target.classList.contains('orange') || e.target.classList.contains('lightgray')) {
+                shipStatus.innerText = "This position has already been hit";
+                shipStatus.style.color = "Orange";
+                return
+            }
 
             if (!playerTwo.gameSet) {
                 return
@@ -717,20 +749,30 @@
             // Improve hiding with a proceed function
             tableTop.style.backgroundColor = "rgba(0, 0, 0, 0)";
 
+            // 22nd October 2024 move this below the ship hit function
             // this should be called once current player is ready to attack
             // const conf = confirm("Do you wish to attack?");
             document.getElementById("spot").innerText = `Confirm attack on ${e.target.innerText}`;
             const conf = await attackConfirm();
+            let shipHit = shipWreck(e, currentBoard.coordinates, currentBoard.name);
             // console.log("CONF", conf);
             if (conf) {
-                setTimeout(() => {
-                    // console.log("Opponent Attacking");
-                    Array.from(cells).forEach(cell => {
-                    // remove overlay
-                    cell.classList.remove('gray');
+                if (shipHit) {
+                    shipStatus.innerText = "HIT!";
+                    shipStatus.style.color = "Green";
                     e.target.classList.add("orange");
-                });
-                }, 2000);
+                    turn = !turn;
+                } else {
+                    // call method for modal pop up to reveal current player board
+                    setTimeout(() => {
+                        // console.log("Opponent Attacking");
+                        Array.from(cells).forEach(cell => {
+                        // remove overlay
+                        cell.classList.remove('gray');
+                        e.target.classList.add("lightgray");
+                    });
+                    }, 2000);
+                }
             } else {
                 // player did not attack therefore they still have their turn
                 turn = !turn;
@@ -757,6 +799,7 @@
             
 
             enemyTable.style.background.Color = "rgba(0, 0, 0, 1)";
+            // 22nd October 2024
 
             // e.target.classList.add("orange");
             // currentBoard.gameOver();
@@ -782,40 +825,44 @@
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
             // let shipStatus = document.getElementById("hitOrmiss");
-            let shipHit = false;
+            // let shipHit = false;
 
-        
-            for (ship of Object.keys(currentBoard.coordinates)) {
+            // Move remove gray and timeout function below this 22nd October
+            // for (ship of Object.keys(currentBoard.coordinates)) {
 
-                const index = currentBoard.coordinates[ship].indexOf(e.target.innerText);
-                if (index > -1) { // only splice array when item is found
-                    currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
-                    console.log("ship removed", currentBoard.coordinates[ship], ship, currentBoard);
-                    if (currentBoard.name === "Player One" && currentBoard.coordinates[ship].length === 0) {
-                        const li = document.createElement('li');
-                        li.textContent = ship;
-                        playerOneStatus.appendChild(li);
-                        playerOneShips[ship] = 1;
-                    } else if (currentBoard.name === "Player Two" && currentBoard.coordinates[ship].length === 0) {
-                        const li = document.createElement('li');
-                        li.textContent = ship;
-                        playerTwoStatus.appendChild(li);
-                        playerTwoShips[ship] = 1;
-                    }
-                    // window.alert("hit"); // CODE HERE
-                    shipHit = true;
-                }
+            //     const index = currentBoard.coordinates[ship].indexOf(e.target.innerText);
+            //     if (index > -1) { // only splice array when item is found
+            //         currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
+            //         console.log("ship removed", currentBoard.coordinates[ship], ship, currentBoard);
+            //         if (currentBoard.name === "Player One" && currentBoard.coordinates[ship].length === 0) {
+            //             const li = document.createElement('li');
+            //             li.textContent = ship;
+            //             playerOneStatus.appendChild(li);
+            //             playerOneShips[ship] = 1;
+            //         } else if (currentBoard.name === "Player Two" && currentBoard.coordinates[ship].length === 0) {
+            //             const li = document.createElement('li');
+            //             li.textContent = ship;
+            //             playerTwoStatus.appendChild(li);
+            //             playerTwoShips[ship] = 1;
+            //         }
+            //         // window.alert("hit"); // 22nd October 2024
+            //         shipHit = true;
+            //     }
 
-                // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
-                //     console.log("SHIP HIT");
-                // } else {
-                //     console.log("MISS")
-                // }
-            }
+            //     // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
+            //     //     console.log("SHIP HIT");
+            //     // } else {
+            //     //     console.log("MISS")
+            //     // }
+            // }
 
             if (shipHit) {
-                shipStatus.innerText = "HIT!";
-                shipStatus.style.color = "Green";
+                // shipStatus.innerText = "HIT!";
+                // shipStatus.style.color = "Green";
+                // 22nd of October 2024
+                // turn = !turn;
+                // return
+                // check if the game is over
             } else {
                 shipStatus.innerText = "MISS!";
                 shipStatus.style.color = "Red";
@@ -863,11 +910,11 @@
             const cellsTwo = tableTwo.getElementsByTagName("td");
             
             Array.from(cellsOne).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray');
+                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray', 'lightgray');
             });
 
             Array.from(cellsTwo).forEach(cell => {
-                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray');
+                cell.classList.remove('pink', 'blue', 'white', 'orange', 'gray', 'lightgray');
             });
 
             clearCoordinates(coords);
