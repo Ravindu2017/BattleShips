@@ -764,6 +764,8 @@
                     turn = !turn;
                 } else {
                     // call method for modal pop up to reveal current player board
+                    shipStatus.innerText = "MISS!";
+                    shipStatus.style.color = "Red";
                     setTimeout(() => {
                         // console.log("Opponent Attacking");
                         Array.from(cells).forEach(cell => {
@@ -779,18 +781,6 @@
                 return
             }
             
-            /*
-            setTimeout(() => {
-                console.log("Opponent Attacking");
-                Array.from(cells).forEach(cell => {
-                    // add overlay
-                cell.classList.remove('gray');
-            });
-            }, 2000);
-            */
-            // Array.from(cells).forEach(cell => {
-            //     cell.classList.remove('gray');
-            // });
 
             Array.from(enemyCells).forEach(cell => {
                 cell.classList.add('gray');
@@ -799,74 +789,9 @@
             
 
             enemyTable.style.background.Color = "rgba(0, 0, 0, 1)";
-            // 22nd October 2024
-
-            // e.target.classList.add("orange");
-            // currentBoard.gameOver();
-            // console.log(currentBoard.board, currentBoard.allOver, "game done?");
-
-            // if (currentBoard.allOver) {
-            //     window.alert(`${currentBoard.name} loses`);
-            // }
-            // // currentBoard.gameOver();
-
-            // console.log(currentBoard.currentShips(), currentBoard.allOver);
-
-            // if (currentBoard.allOver) {
-            //     console.log(`${currentBoard.name} loses`);
-            //     window.alert(`${currentBoard.name} loses`)
-            // }
-
-            // start coding from HERE!
-            // create reference to removeShip function 
-            // which will pop off the coord for the ship object
-            // removeShip(currentBoard.coordinates, e.target.innerText)
 
             currentBoard.board[e.target.innerText].hit = true;
             console.log(`Position ${e.target.innerText} has been hit!`);
-            // let shipStatus = document.getElementById("hitOrmiss");
-            // let shipHit = false;
-
-            // Move remove gray and timeout function below this 22nd October
-            // for (ship of Object.keys(currentBoard.coordinates)) {
-
-            //     const index = currentBoard.coordinates[ship].indexOf(e.target.innerText);
-            //     if (index > -1) { // only splice array when item is found
-            //         currentBoard.coordinates[ship].splice(index, 1); // 2nd parameter means remove one item only
-            //         console.log("ship removed", currentBoard.coordinates[ship], ship, currentBoard);
-            //         if (currentBoard.name === "Player One" && currentBoard.coordinates[ship].length === 0) {
-            //             const li = document.createElement('li');
-            //             li.textContent = ship;
-            //             playerOneStatus.appendChild(li);
-            //             playerOneShips[ship] = 1;
-            //         } else if (currentBoard.name === "Player Two" && currentBoard.coordinates[ship].length === 0) {
-            //             const li = document.createElement('li');
-            //             li.textContent = ship;
-            //             playerTwoStatus.appendChild(li);
-            //             playerTwoShips[ship] = 1;
-            //         }
-            //         // window.alert("hit"); // 22nd October 2024
-            //         shipHit = true;
-            //     }
-
-            //     // if (currentBoard.coordinates[ship].includes(e.target.innerText)) {
-            //     //     console.log("SHIP HIT");
-            //     // } else {
-            //     //     console.log("MISS")
-            //     // }
-            // }
-
-            if (shipHit) {
-                // shipStatus.innerText = "HIT!";
-                // shipStatus.style.color = "Green";
-                // 22nd of October 2024
-                // turn = !turn;
-                // return
-                // check if the game is over
-            } else {
-                shipStatus.innerText = "MISS!";
-                shipStatus.style.color = "Red";
-            }
 
             currentBoard.gameOver();
             // console.log(currentBoard.board, currentBoard.allOver, "game done?");
@@ -876,13 +801,7 @@
                 // Play again button
                 // CODE HERE
             }
-            // currentBoard.gameOver();
 
-            // console.log(currentBoard.currentShips(), currentBoard.allOver);
-
-            // Check ship health 18th July 2024
-            // currentBoard.gameOver()
-            // console.log(currentBoard.currentShips(), currentBoard.allOver);
         }
 
         document.getElementById("battleShips").addEventListener("click", myFunc);
