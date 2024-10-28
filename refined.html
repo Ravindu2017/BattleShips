@@ -180,10 +180,19 @@
 
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
-            <p id="spot">Confirm attack</p>
+            <h2 id="spot">Confirm attack</h2>
             <div class="modal-buttons">
                 <button id="yesButton">Attack!</button>
                 <button id="noButton">On second thought...</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="revealShipModal" class="modal">
+        <div class="modal-content">
+            <h2 id="missedASpot">You missed!</h2>
+            <div class="modal-buttons">
+                <button id="revealButton">Show me my board</button>
             </div>
         </div>
     </div>
@@ -622,7 +631,7 @@
 
         
         // modal function
-        function showModal() {
+        function attackModal() {
             return new Promise((resolve) => {
             const modal = document.getElementById('confirmationModal');
             modal.style.display = 'block'; // Show the modal
@@ -643,6 +652,48 @@
                 resolve(false); // Resolve the promise with false
             };
             });
+        }
+
+        // modal function
+        function revealModal() {
+            return new Promise((resolve) => {
+            const modal = document.getElementById('revealShipModal');
+            modal.style.display = 'block'; // Show the modal
+
+            // Get buttons
+            const yesButton = document.getElementById('revealButton');
+
+            // Handle Yes click
+            yesButton.onclick = function() {
+                modal.style.display = 'none'; // Hide the modal
+                resolve(true); // Resolve the promise with true
+            };
+            });
+        }
+
+        async function attackConfirm() {
+            const userConfirmed = await attackModal();
+            let conf = true;
+            
+            if (userConfirmed) {
+            } else {
+                conf = false;
+            }
+
+            return conf
+        }
+
+        async function revealShipConfirm() {
+            const userConfirmed = await revealModal();
+            let confirmation = true;
+            
+            if (userConfirmed) {
+            } else {
+                console.log("edge case");
+                confirmation = false;
+            }
+
+            return confirmation
         }
 
         function shipWreck(e, shipLocation, shipName) {
@@ -666,18 +717,6 @@
                 }
             }
             return shipHit
-        }
-
-        async function attackConfirm() {
-            const userConfirmed = await showModal();
-            let conf = true;
-            
-            if (userConfirmed) {
-            } else {
-                conf = false;
-            }
-
-            return conf
         }
 
         // game function
@@ -729,15 +768,18 @@
             // console.log(e, e.target.color, depth[0]);
             let currentBoard = "";
             let opponent = "";
+            let opponentName = "";
 
             if (depth[0] === "header") {
                 currentBoard = playerOne;
                 currentBoard.name = "Player One";
                 opponent = playerTwo;
+                opponentName = "Player Two";
             } else if (depth[0] === "footer") {
                 currentBoard = playerTwo;
                 currentBoard.name = "Player Two";
                 opponent = playerOne;
+                opponentName = "Player One";
             }
 
             const tableTop = document.getElementById(currentBoard.htmlID);
@@ -754,10 +796,11 @@
             // const conf = confirm("Do you wish to attack?");
             document.getElementById("spot").innerText = `Confirm attack on ${e.target.innerText}`;
             const conf = await attackConfirm();
-            let shipHit = shipWreck(e, currentBoard.coordinates, currentBoard.name);
             // console.log("CONF", conf);
             if (conf) {
-                if (shipHit) {
+                // need to handle wait button since that adds gray class by default or could be because I am nesting my promises
+                let shipHit = shipWreck(e, currentBoard.coordinates, currentBoard.name);
+                if (shipHit == true) {
                     shipStatus.innerText = "HIT!";
                     shipStatus.style.color = "Green";
                     e.target.classList.add("orange");
@@ -766,17 +809,25 @@
                     // call method for modal pop up to reveal current player board
                     shipStatus.innerText = "MISS!";
                     shipStatus.style.color = "Red";
-                    setTimeout(() => {
-                        // console.log("Opponent Attacking");
+                    document.getElementById("missedASpot").innerText = `${opponentName} missed on ${e.target.innerText}`;
+                    document.getElementById("revealButton").innerText = `Show me my (${currentBoard.name}) board`;
+                    const shipConf = await revealShipConfirm();
+                    if (shipConf) {
                         Array.from(cells).forEach(cell => {
-                        // remove overlay
-                        cell.classList.remove('gray');
-                        e.target.classList.add("lightgray");
-                    });
-                    }, 2000);
+                            cell.classList.remove('gray');
+                            e.target.classList.add("lightgray");
+                        });
+                    }
+                    // setTimeout(() => {
+                    //     // console.log("Opponent Attacking");
+                    //     Array.from(cells).forEach(cell => {
+                    //     // remove overlay
+                    //     cell.classList.remove('gray');
+                    //     e.target.classList.add("lightgray");
+                    // });
+                    // }, 2000);
                 }
-            } else {
-                // player did not attack therefore they still have their turn
+            } else if (conf === false) { // on second though button clicked
                 turn = !turn;
                 return
             }
